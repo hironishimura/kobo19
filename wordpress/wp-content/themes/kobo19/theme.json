@@ -1,0 +1,82 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 2,
+	"settings": {
+		"appearanceTools": true,
+		"layout": {
+			"contentSize": "40em",
+			"wideSize": "1000px"
+		},
+		"color": {
+			"custom": true,
+			"customGradient": false,
+			"defaultPalette": false,
+			"defaultGradients": false,
+			"palette": [
+				{ "slug": "paper", "color": "#edeeea", "name": "紙" },
+				{ "slug": "paper-raised", "color": "#f5f6f3", "name": "紙（明）" },
+				{ "slug": "paper-sunken", "color": "#e4e6e0", "name": "紙（暗）" },
+				{ "slug": "graphite", "color": "#1c1f24", "name": "鉛筆" },
+				{ "slug": "ink", "color": "#4b515a", "name": "本文" },
+				{ "slug": "rule", "color": "#c2c6bd", "name": "罫線" },
+				{ "slug": "kegaki", "color": "#23388a", "name": "罫書きの青" },
+				{ "slug": "mark", "color": "#b4372a", "name": "見当の朱" }
+			]
+		},
+		"typography": {
+			"customFontSize": true,
+			"lineHeight": true,
+			"dropCap": false,
+			"fontFamilies": [
+				{
+					"slug": "display",
+					"name": "見出し（Zen Kaku Gothic New）",
+					"fontFamily": "\"Zen Kaku Gothic New\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic\", sans-serif"
+				},
+				{
+					"slug": "mono",
+					"name": "数値・符号（IBM Plex Mono）",
+					"fontFamily": "\"IBM Plex Mono\", ui-monospace, \"SFMono-Regular\", Menlo, monospace"
+				}
+			],
+			"fontSizes": [
+				{ "slug": "small", "size": "0.88rem", "name": "小" },
+				{ "slug": "medium", "size": "1rem", "name": "標準" },
+				{ "slug": "large", "size": "1.3rem", "name": "大" },
+				{ "slug": "x-large", "size": "clamp(1.8rem, 4vw, 2.6rem)", "name": "特大" }
+			]
+		},
+		"spacing": {
+			"units": ["px", "em", "rem", "%", "vw"]
+		}
+	},
+	"styles": {
+		"color": {
+			"background": "var(--wp--preset--color--paper)",
+			"text": "var(--wp--preset--color--ink)"
+		},
+		"typography": {
+			"fontFamily": "var(--wp--preset--font-family--display)",
+			"lineHeight": "2.05"
+		},
+		"elements": {
+			"link": {
+				"color": {
+					"text": "var(--wp--preset--color--kegaki)"
+				}
+			},
+			"h1": {
+				"color": { "text": "var(--wp--preset--color--graphite)" },
+				"typography": { "fontWeight": "900" }
+			},
+			"h2": {
+				"color": { "text": "var(--wp--preset--color--graphite)" },
+				"typography": { "fontWeight": "700" }
+			},
+			"h3": {
+				"color": { "text": "var(--wp--preset--color--graphite)" },
+				"typography": { "fontWeight": "700" }
+			}
+		}
+	}
+}

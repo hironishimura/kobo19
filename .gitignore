@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# エディタ
+*.swp
+.vscode/
+.idea/
+
+# ログ・一時ファイル
+*.log
+node_modules/
