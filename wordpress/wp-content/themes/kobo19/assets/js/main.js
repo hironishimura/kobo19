@@ -3,9 +3,8 @@
  *
  * 1. 狭い画面のメニュー開閉
  * 2. スクロールしてきた要素を現す
- * 3. トップの線画を、実際の線の長さに合わせて引く
  *
- * 動きを減らす設定の環境では 2 と 3 を行いません。
+ * 動きを減らす設定の環境では 2 を行いません。
  */
 ( function () {
 	'use strict';
@@ -87,34 +86,9 @@
 		} );
 	}
 
-	/* ------------------------------------------------------------------
-	   線画を実寸で引く
-	   CSSの --len は目安の値なので、読み込み後に実際の長さで置き換えます。
-	   ------------------------------------------------------------------ */
-	function setupDrawing() {
-		var paths = document.querySelectorAll( '.drawing .draw' );
-
-		if ( ! paths.length || reduceMotion ) {
-			return;
-		}
-
-		paths.forEach( function ( path ) {
-			if ( 'function' !== typeof path.getTotalLength ) {
-				return;
-			}
-
-			var length = path.getTotalLength();
-
-			if ( length > 0 ) {
-				path.style.setProperty( '--len', Math.ceil( length ) );
-			}
-		} );
-	}
-
 	function init() {
 		setupNav();
 		setupReveal();
-		setupDrawing();
 	}
 
 	if ( 'loading' === document.readyState ) {

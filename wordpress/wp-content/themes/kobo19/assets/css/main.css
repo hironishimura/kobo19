@@ -401,19 +401,18 @@ code {
 }
 
 /* --------------------------------------------------------------------------
-   5. トップの見出し
+   5. トップの見出しと覚え書き
    -------------------------------------------------------------------------- */
 
 .hero {
-	padding-block: clamp(56px, 9vw, 112px) clamp(40px, 6vw, 76px);
+	padding-block: clamp(56px, 9vw, 112px) clamp(24px, 3.5vw, 44px);
 }
 
-.hero__grid {
-	display: grid;
-	grid-template-columns: minmax(0, 1.18fr) minmax(0, 0.82fr);
-	gap: clamp(32px, 5vw, 64px);
-	align-items: center;
+/* 見出しのすぐ下が制作物一覧なので、あいだは詰める */
+.hero + .section {
+	padding-top: clamp(40px, 5vw, 72px);
 }
+
 
 .hero__eyebrow {
 	font-family: var(--font-mono);
@@ -434,7 +433,7 @@ code {
 }
 
 .hero__title {
-	font-size: clamp(1.6rem, 4.1vw, 3.1rem);
+	font-size: clamp(1.6rem, 4.6vw, 3.5rem);
 	font-weight: 900;
 	line-height: 1.42;
 	letter-spacing: 0.005em;
@@ -445,7 +444,7 @@ code {
 
 .hero__lead {
 	margin-top: 1.6em;
-	max-width: 34em;
+	max-width: 38em;
 	font-size: 1.02rem;
 	line-height: 2;
 }
@@ -457,17 +456,37 @@ code {
 	margin-top: 2.4em;
 }
 
-.hero__figure {
-	position: relative;
+
+
+/* 「仕事の進めかた」。カードにすると制作物と紛らわしいので、上罫線だけで組む */
+.notes {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	gap: clamp(20px, 2.6vw, 36px);
+	margin-top: clamp(28px, 4vw, 40px);
 }
 
-.hero__figure figcaption {
-	font-family: var(--font-mono);
-	font-size: 0.7rem;
-	letter-spacing: 0.12em;
-	color: var(--ink-soft);
-	margin-top: 1em;
-	text-align: right;
+.note {
+	border-top: 1px solid var(--graphite);
+	padding-top: 1.1rem;
+}
+
+.note__title {
+	font-size: 1.05rem;
+	font-weight: 700;
+	letter-spacing: 0.01em;
+}
+
+.note__text {
+	margin: 0.7em 0 0;
+	font-size: 0.9rem;
+	line-height: 1.9;
+	color: var(--ink);
+}
+
+/* セクション末尾の「もっと見る」ボタン */
+.section-more {
+	margin: clamp(28px, 4vw, 44px) 0 0;
 }
 
 /* --------------------------------------------------------------------------
@@ -518,62 +537,7 @@ code {
 }
 
 /* --------------------------------------------------------------------------
-   7. 数量表（制作物の内訳）
-   -------------------------------------------------------------------------- */
-
-.tally {
-	display: grid;
-	grid-template-columns: repeat(4, minmax(0, 1fr));
-	border: 1px solid var(--rule);
-	background: var(--paper-raised);
-	margin-top: clamp(40px, 6vw, 72px);
-}
-
-.tally__cell {
-	padding: 1.3rem 1.4rem;
-	border-right: 1px solid var(--rule);
-	text-decoration: none;
-	display: block;
-	transition: background var(--speed) var(--ease);
-}
-
-.tally__cell:last-child {
-	border-right: 0;
-}
-
-a.tally__cell:hover {
-	background: var(--paper-sunken);
-}
-
-.tally__label {
-	display: block;
-	font-family: var(--font-mono);
-	font-size: 0.68rem;
-	letter-spacing: 0.16em;
-	color: var(--ink-soft);
-	margin-bottom: 0.5em;
-}
-
-.tally__value {
-	display: flex;
-	align-items: baseline;
-	gap: 0.4em;
-	font-family: var(--font-display);
-	font-weight: 700;
-	font-size: 1.02rem;
-	color: var(--graphite);
-	line-height: 1.4;
-}
-
-.tally__count {
-	font-family: var(--font-mono);
-	font-size: 0.78rem;
-	font-weight: 500;
-	color: var(--ink-soft);
-}
-
-/* --------------------------------------------------------------------------
-   8. 制作物カード（表題欄）
+   7. 制作物カード（表題欄）
    -------------------------------------------------------------------------- */
 
 .work-grid {
@@ -781,53 +745,7 @@ a.tally__cell:hover {
 }
 
 /* --------------------------------------------------------------------------
-   9. 区分ごとのまとまり（トップページ）
-   -------------------------------------------------------------------------- */
-
-.category-block + .category-block {
-	margin-top: clamp(56px, 8vw, 96px);
-}
-
-.category-block__head {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: baseline;
-	gap: clamp(1.2rem, 3vw, 2.4rem);
-	padding-bottom: 1.1rem;
-	border-bottom: 1px solid var(--graphite);
-}
-
-.category-block__heading {
-	display: flex;
-	align-items: baseline;
-	gap: 0.9rem;
-}
-
-.category-block__sign {
-	font-family: var(--font-mono);
-	font-size: 0.78rem;
-	font-weight: 600;
-	letter-spacing: 0.06em;
-	color: var(--paper);
-	background: var(--graphite);
-	padding: 0.2em 0.55em;
-}
-
-.category-block__title {
-	font-size: clamp(1.3rem, 2.6vw, 1.72rem);
-	font-weight: 900;
-	letter-spacing: 0.03em;
-}
-
-.category-block__desc {
-	max-width: 34em;
-	font-size: 0.9rem;
-	color: var(--ink);
-	margin: 0;
-}
-
-/* --------------------------------------------------------------------------
-   10. 一覧ページの絞り込み
+   8. 一覧ページの絞り込み
    -------------------------------------------------------------------------- */
 
 .page-head {
@@ -877,7 +795,7 @@ a.tally__cell:hover {
 }
 
 /* --------------------------------------------------------------------------
-   11. 制作物の詳細
+   9. 制作物の詳細
    -------------------------------------------------------------------------- */
 
 .work-single {
@@ -1015,7 +933,7 @@ a.tally__cell:hover {
 }
 
 /* --------------------------------------------------------------------------
-   12. 固定ページ・投稿
+   10. 固定ページ・投稿
    -------------------------------------------------------------------------- */
 
 .entry {
@@ -1205,7 +1123,7 @@ a.tally__cell:hover {
 }
 
 /* --------------------------------------------------------------------------
-   13. 相談する（フッター手前）
+   11. 相談する（フッター手前）
    -------------------------------------------------------------------------- */
 
 .contact {
@@ -1233,7 +1151,7 @@ a.tally__cell:hover {
 }
 
 /* --------------------------------------------------------------------------
-   14. フッター
+   12. フッター
    -------------------------------------------------------------------------- */
 
 .site-footer {
@@ -1301,90 +1219,7 @@ a.tally__cell:hover {
 }
 
 /* --------------------------------------------------------------------------
-   15. 線画（トップの図版）
-   -------------------------------------------------------------------------- */
-
-.drawing {
-	width: 100%;
-	height: auto;
-	overflow: visible;
-}
-
-.drawing .line {
-	fill: none;
-	stroke: var(--graphite);
-	stroke-width: 1.4;
-	stroke-linecap: round;
-	stroke-linejoin: round;
-	vector-effect: non-scaling-stroke;
-}
-
-.drawing .line--thin {
-	stroke-width: 0.9;
-	stroke: var(--ink-soft);
-}
-
-/* 曲げ木の笠木だけは太く引く */
-.drawing .line--bold {
-	stroke-width: 2.4;
-	stroke: var(--graphite);
-}
-
-/* ペーパーコードの編み目。塗りつぶしに見えない太さで */
-.drawing .line--hair {
-	stroke-width: 0.6;
-	stroke: var(--rule);
-}
-
-.drawing .dim {
-	fill: none;
-	stroke: var(--kegaki);
-	stroke-width: 0.7;
-	vector-effect: non-scaling-stroke;
-}
-
-.drawing .dim-text {
-	fill: var(--kegaki);
-	font-family: var(--font-mono);
-	font-size: 9px;
-	letter-spacing: 0.08em;
-}
-
-.drawing .axis {
-	stroke: var(--rule);
-	stroke-width: 0.7;
-	stroke-dasharray: 8 3 2 3;
-	vector-effect: non-scaling-stroke;
-}
-
-/* 読み込みのときに線を引く */
-.drawing .draw {
-	stroke-dasharray: var(--len, 900);
-	stroke-dashoffset: var(--len, 900);
-	animation: kobo-draw 1500ms var(--ease) forwards;
-	animation-delay: var(--delay, 0ms);
-}
-
-@keyframes kobo-draw {
-	to {
-		stroke-dashoffset: 0;
-	}
-}
-
-.drawing .fade {
-	opacity: 0;
-	animation: kobo-fade 600ms var(--ease) forwards;
-	animation-delay: 1300ms;
-}
-
-@keyframes kobo-fade {
-	to {
-		opacity: 1;
-	}
-}
-
-/* --------------------------------------------------------------------------
-   16. スクロールで現れる
+   13. スクロールで現れる
    -------------------------------------------------------------------------- */
 
 .reveal {
@@ -1399,7 +1234,7 @@ a.tally__cell:hover {
 }
 
 /* --------------------------------------------------------------------------
-   17. 画面幅への対応
+   14. 画面幅への対応
    -------------------------------------------------------------------------- */
 
 @media (min-width: 900px) {
@@ -1409,14 +1244,7 @@ a.tally__cell:hover {
 }
 
 @media (max-width: 960px) {
-	.hero__grid {
-		grid-template-columns: 1fr;
-	}
 
-	.hero__figure {
-		max-width: 460px;
-		margin-inline: auto;
-	}
 
 	.work-single__head {
 		grid-template-columns: 1fr;
@@ -1428,17 +1256,8 @@ a.tally__cell:hover {
 }
 
 @media (max-width: 780px) {
-	.tally {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-	}
 
-	.tally__cell:nth-child(2n) {
-		border-right: 0;
-	}
 
-	.tally__cell:nth-child(-n + 2) {
-		border-bottom: 1px solid var(--rule);
-	}
 
 	.nav-toggle {
 		display: inline-flex;
@@ -1495,10 +1314,6 @@ a.tally__cell:hover {
 		border-right: 0;
 	}
 
-	.category-block__head {
-		flex-direction: column;
-		align-items: flex-start;
-	}
 
 	/* 幅が狭いときはボタンを揃えて全幅に */
 	.hero__actions .btn,
@@ -1509,7 +1324,7 @@ a.tally__cell:hover {
 }
 
 /* --------------------------------------------------------------------------
-   18. 動きを減らす設定への対応
+   15. 動きを減らす設定への対応
    -------------------------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
@@ -1525,13 +1340,7 @@ a.tally__cell:hover {
 		transition-duration: 0.01ms !important;
 	}
 
-	.drawing .draw {
-		stroke-dashoffset: 0;
-	}
 
-	.drawing .fade {
-		opacity: 1;
-	}
 
 	.reveal {
 		opacity: 1;

@@ -1,6 +1,10 @@
 <?php
 /**
- * トップページ。見出し・数量表・区分ごとの制作物一覧。
+ * トップページ。制作物を新しい順に一列で並べます。
+ *
+ * 並び順は「ページ属性 → 順序」の数字が小さいものから。数字が同じときは
+ * 新しいものが先に来ます。新しく追加した制作物は順序が 0 なので、
+ * 何も設定しなければ自動で一番上に並びます。
  *
  * @package kobo19
  */
@@ -9,137 +13,72 @@ defined( 'ABSPATH' ) || exit;
 
 get_header();
 
-$kobo19_categories  = kobo19_ordered_categories();
 $kobo19_total       = kobo19_work_count();
 $kobo19_archive_url = get_post_type_archive_link( 'work' );
-$kobo19_signs       = array(
-	'homepage' => 'W',
-	'program'  => 'P',
-	'product'  => 'D',
+$kobo19_shown       = 12;
+
+$kobo19_query = new WP_Query(
+	array(
+		'post_type'      => 'work',
+		'posts_per_page' => $kobo19_shown,
+		'orderby'        => array(
+			'menu_order' => 'ASC',
+			'date'       => 'DESC',
+		),
+	)
 );
 ?>
 
 <section class="hero">
 	<div class="wrap">
+		<p class="hero__eyebrow"><?php echo esc_html( kobo19_option( 'kobo19_hero_eyebrow', 'WORKSHOP 19' ) ); ?><?php echo $kobo19_total ? ' ／ 制作物 ' . esc_html( (string) $kobo19_total ) . ' 点' : ''; ?></p>
 
-		<div class="hero__grid">
-			<div>
-				<p class="hero__eyebrow"><?php echo esc_html( kobo19_option( 'kobo19_hero_eyebrow', 'WORKSHOP 19 ／ 制作物一覧' ) ); ?></p>
+		<h1 class="hero__title"><?php echo esc_html( kobo19_option( 'kobo19_hero_title', "つくるものは違っても、\nやることは同じです。" ) ); ?></h1>
 
-				<h1 class="hero__title"><?php echo esc_html( kobo19_option( 'kobo19_hero_title', "つくるものは違っても、\nやることは同じです。" ) ); ?></h1>
+		<p class="hero__lead"><?php echo esc_html( kobo19_option( 'kobo19_hero_lead', 'サイトも、業務の道具も、Macアプリも、3Dモデルも。何が要るのかを聞いて、図面を引いて、寸法を決めて、動くところまで持っていく。19工房はその繰り返しでできています。' ) ); ?></p>
 
-				<p class="hero__lead"><?php echo esc_html( kobo19_option( 'kobo19_hero_lead', 'サイトも、業務の道具も、Macアプリも、椅子の3Dモデルも。図面を引いて、寸法を決めて、かたちにする。19工房はその繰り返しでできています。' ) ); ?></p>
+		<div class="hero__actions">
+			<?php if ( $kobo19_archive_url ) : ?>
+				<a class="btn" href="<?php echo esc_url( $kobo19_archive_url ); ?>">制作物をすべて見る</a>
+			<?php endif; ?>
 
-				<div class="hero__actions">
-					<?php if ( $kobo19_archive_url ) : ?>
-						<a class="btn" href="<?php echo esc_url( $kobo19_archive_url ); ?>">制作物をすべて見る</a>
-					<?php endif; ?>
-
-					<?php $kobo19_about = get_page_by_path( 'about' ); ?>
-					<?php if ( $kobo19_about ) : ?>
-						<a class="btn btn--quiet" href="<?php echo esc_url( get_permalink( $kobo19_about ) ); ?>">工房について</a>
-					<?php endif; ?>
-				</div>
-			</div>
-
-			<?php if ( get_theme_mod( 'kobo19_show_hero_figure', true ) ) : ?>
-				<?php get_template_part( 'template-parts/hero-figure' ); ?>
+			<?php $kobo19_about = get_page_by_path( 'about' ); ?>
+			<?php if ( $kobo19_about ) : ?>
+				<a class="btn btn--quiet" href="<?php echo esc_url( get_permalink( $kobo19_about ) ); ?>">工房について</a>
 			<?php endif; ?>
 		</div>
-
-		<?php if ( $kobo19_categories ) : ?>
-			<div class="tally">
-				<div class="tally__cell">
-					<span class="tally__label">制作物</span>
-					<span class="tally__value"><?php echo esc_html( (string) $kobo19_total ); ?> 点</span>
-				</div>
-
-				<?php foreach ( $kobo19_categories as $kobo19_term ) : ?>
-					<?php
-					$kobo19_link = get_term_link( $kobo19_term );
-					if ( is_wp_error( $kobo19_link ) ) {
-						continue;
-					}
-					?>
-					<a class="tally__cell" href="<?php echo esc_url( $kobo19_link ); ?>">
-						<span class="tally__label"><?php echo esc_html( isset( $kobo19_signs[ $kobo19_term->slug ] ) ? $kobo19_signs[ $kobo19_term->slug ] : '—' ); ?></span>
-						<span class="tally__value">
-							<?php echo esc_html( $kobo19_term->name ); ?>
-							<span class="tally__count"><?php echo esc_html( (string) $kobo19_term->count ); ?></span>
-						</span>
-					</a>
-				<?php endforeach; ?>
-			</div>
-		<?php endif; ?>
-
 	</div>
 </section>
 
 <section class="section">
 	<div class="wrap">
 
-		<p class="eyebrow">Index</p>
-		<h2 class="section-title">つくったもの</h2>
-		<p class="section-lead">区分ごとに並べています。図番の頭文字は区分の符号です。図版のないものは、区分ごとに角度の違うハッチングで埋めてあります。</p>
+		<p class="eyebrow">Index ／ 新しい順</p>
 
-		<?php foreach ( $kobo19_categories as $kobo19_term ) : ?>
-			<?php
-			$kobo19_query = new WP_Query(
-				array(
-					'post_type'      => 'work',
-					'posts_per_page' => 6,
-					'orderby'        => array(
-						'menu_order' => 'ASC',
-						'date'       => 'DESC',
-					),
-					'tax_query'      => array(
-						array(
-							'taxonomy' => 'work_category',
-							'field'    => 'term_id',
-							'terms'    => $kobo19_term->term_id,
-						),
-					),
-				)
-			);
-
-			if ( ! $kobo19_query->have_posts() ) {
+		<?php if ( $kobo19_query->have_posts() ) : ?>
+			<div class="work-grid">
+				<?php
+				while ( $kobo19_query->have_posts() ) :
+					$kobo19_query->the_post();
+					get_template_part( 'template-parts/work-card', null, array( 'heading' => 'h2' ) );
+				endwhile;
 				wp_reset_postdata();
-				continue;
-			}
-
-			$kobo19_term_link = get_term_link( $kobo19_term );
-			?>
-
-			<div class="category-block">
-				<div class="category-block__head">
-					<div class="category-block__heading">
-						<span class="category-block__sign"><?php echo esc_html( isset( $kobo19_signs[ $kobo19_term->slug ] ) ? $kobo19_signs[ $kobo19_term->slug ] : '—' ); ?></span>
-						<h3 class="category-block__title"><?php echo esc_html( $kobo19_term->name ); ?></h3>
-					</div>
-
-					<?php if ( $kobo19_term->description ) : ?>
-						<p class="category-block__desc"><?php echo esc_html( $kobo19_term->description ); ?></p>
-					<?php endif; ?>
-				</div>
-
-				<div class="work-grid">
-					<?php
-					while ( $kobo19_query->have_posts() ) :
-						$kobo19_query->the_post();
-						get_template_part( 'template-parts/work-card', null, array( 'heading' => 'h4' ) );
-					endwhile;
-					?>
-				</div>
-
-				<?php if ( $kobo19_query->found_posts > 6 && ! is_wp_error( $kobo19_term_link ) ) : ?>
-					<p style="margin-top:1.8rem;">
-						<a class="btn btn--quiet" href="<?php echo esc_url( $kobo19_term_link ); ?>"><?php echo esc_html( $kobo19_term->name ); ?>をすべて見る（<?php echo esc_html( (string) $kobo19_query->found_posts ); ?>点）</a>
-					</p>
-				<?php endif; ?>
+				?>
 			</div>
 
-			<?php wp_reset_postdata(); ?>
-		<?php endforeach; ?>
+			<?php if ( $kobo19_total > $kobo19_shown && $kobo19_archive_url ) : ?>
+				<p class="section-more">
+					<a class="btn btn--quiet" href="<?php echo esc_url( $kobo19_archive_url ); ?>">
+						残りの<?php echo esc_html( (string) ( $kobo19_total - $kobo19_shown ) ); ?>点も見る
+					</a>
+				</p>
+			<?php endif; ?>
+		<?php else : ?>
+			<div class="notice">
+				<p class="notice__code">まだ登録がありません</p>
+				<p>管理画面の「制作物」から追加すると、ここに新しい順で並びます。</p>
+			</div>
+		<?php endif; ?>
 
 	</div>
 </section>
@@ -154,22 +93,22 @@ if ( $kobo19_about_page ) :
 		<p class="eyebrow">About</p>
 		<h2 class="section-title">仕事の進めかた</h2>
 
-		<div class="work-grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));">
-			<div class="work-card reveal" style="padding:1.6rem;">
-				<h3 class="work-card__title">動くものを早く見せます</h3>
-				<p class="work-card__summary">説明より現物のほうが早いので、まず触れる形にしてから相談します。</p>
+		<div class="notes">
+			<div class="note reveal">
+				<h3 class="note__title">動くものを早く見せます</h3>
+				<p class="note__text">説明より現物のほうが早いので、まず触れる形にしてから相談します。</p>
 			</div>
-			<div class="work-card reveal" style="padding:1.6rem;">
-				<h3 class="work-card__title">あとから触れるように残します</h3>
-				<p class="work-card__summary">引き渡したあと、担当の方が自分で直せることを設計の条件に入れています。</p>
+			<div class="note reveal">
+				<h3 class="note__title">あとから触れるように残します</h3>
+				<p class="note__text">引き渡したあと、担当の方が自分で直せることを設計の条件に入れています。</p>
 			</div>
-			<div class="work-card reveal" style="padding:1.6rem;">
-				<h3 class="work-card__title">必要のないものは足しません</h3>
-				<p class="work-card__summary">外部サービスもプラグインも、無くて済むなら使いません。面倒を見る人の手間が増えるからです。</p>
+			<div class="note reveal">
+				<h3 class="note__title">必要のないものは足しません</h3>
+				<p class="note__text">外部サービスもプラグインも、無くて済むなら使いません。面倒を見る人の手間が増えるからです。</p>
 			</div>
 		</div>
 
-		<p style="margin-top:2rem;">
+		<p class="section-more">
 			<a class="btn btn--quiet" href="<?php echo esc_url( get_permalink( $kobo19_about_page ) ); ?>">工房についてもっと読む</a>
 		</p>
 	</div>

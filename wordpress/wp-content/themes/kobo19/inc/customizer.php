@@ -30,7 +30,7 @@ function kobo19_customize_register( $wp_customize ) {
 	$fields = array(
 		'kobo19_hero_eyebrow'  => array(
 			'label'   => 'トップの小見出し',
-			'default' => 'WORKSHOP 19 ／ 制作物一覧',
+			'default' => 'WORKSHOP 19',
 			'type'    => 'text',
 		),
 		'kobo19_hero_title'    => array(
@@ -40,13 +40,8 @@ function kobo19_customize_register( $wp_customize ) {
 		),
 		'kobo19_hero_lead'     => array(
 			'label'   => 'トップの説明文',
-			'default' => 'サイトも、業務の道具も、Macアプリも、椅子の3Dモデルも。図面を引いて、寸法を決めて、かたちにする。19工房はその繰り返しでできています。',
+			'default' => 'サイトも、業務の道具も、Macアプリも、3Dモデルも。何が要るのかを聞いて、図面を引いて、寸法を決めて、動くところまで持っていく。19工房はその繰り返しでできています。',
 			'type'    => 'textarea',
-		),
-		'kobo19_hero_note'     => array(
-			'label'   => 'トップ図版の注記',
-			'default' => 'D-03 Yチェア ／ Rhinoceros・Blender',
-			'type'    => 'text',
 		),
 		'kobo19_contact_label' => array(
 			'label'   => 'フッターの連絡先の見出し',
@@ -89,36 +84,8 @@ function kobo19_customize_register( $wp_customize ) {
 			)
 		);
 	}
-
-	$wp_customize->add_setting(
-		'kobo19_show_hero_figure',
-		array(
-			'default'           => true,
-			'sanitize_callback' => 'kobo19_sanitize_checkbox',
-		)
-	);
-
-	$wp_customize->add_control(
-		'kobo19_show_hero_figure',
-		array(
-			'label'       => 'トップに線画を表示する',
-			'description' => '外すと見出しと説明文だけになります。',
-			'section'     => 'kobo19_settings',
-			'type'        => 'checkbox',
-		)
-	);
 }
 add_action( 'customize_register', 'kobo19_customize_register' );
-
-/**
- * チェックボックスの値を真偽値にそろえる。
- *
- * @param mixed $checked 入力値。
- * @return bool
- */
-function kobo19_sanitize_checkbox( $checked ) {
-	return ( isset( $checked ) && true === (bool) $checked );
-}
 
 /**
  * カスタマイザーの値を取り出す。
