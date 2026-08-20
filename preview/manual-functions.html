@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>関数と定数｜SujiCalc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../wordpress/wp-content/themes/kobo19/assets/css/main.css">
+</head>
+<body>
+<a class="skip-link" href="#main">本文へ移動</a>
+
+<div class="site">
+
+	<header class="site-header">
+		<div class="wrap site-header__inner">
+			<a class="brand" href="index.html" rel="home">
+				<span class="brand__mark">19</span>
+				<span class="brand__name">19工房</span>
+				<span class="brand__tagline">つくったものを置いておく場所</span>
+			</a>
+
+			<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">メニュー</button>
+
+			<nav class="nav" id="site-nav" aria-label="メインメニュー">
+				<ul>
+					<li><a href="manual.html">使い方</a></li>
+					<li><a href="support.html">サポート</a></li>
+					<li><a href="privacy.html">プライバシー</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<main id="main">
+
+	<article class="manual">
+		<div class="wrap manual__grid">
+			<aside class="manual__side"><nav class="toc" aria-label="説明書の目次"><p class="toc__title">説明書</p><ol class="toc__list"><li class="toc__item"><a href="manual-getting-started.html"><span class="toc__no">01</span>はじめに</a></li><li class="toc__item"><a href="manual-basics.html"><span class="toc__no">02</span>基本の書きかた</a></li><li class="toc__item"><a href="manual-units.html"><span class="toc__no">03</span>単位</a></li><li class="toc__item"><a href="manual-names.html"><span class="toc__no">04</span>名前と参照</a></li><li class="toc__item"><a href="manual-lists.html"><span class="toc__no">05</span>表と文字</a></li><li class="toc__item is-current"><a href="manual-functions.html" aria-current="page"><span class="toc__no">06</span>関数と定数</a></li><li class="toc__item"><a href="manual-graph.html"><span class="toc__no">07</span>グラフ</a></li><li class="toc__item"><a href="manual-program.html"><span class="toc__no">08</span>プログラム</a></li><li class="toc__item"><a href="manual-sheets.html"><span class="toc__no">09</span>シートと同期</a></li><li class="toc__item"><a href="manual-keypad.html"><span class="toc__no">10</span>キーパッドと設定</a></li><li class="toc__item"><a href="manual-shortcuts.html"><span class="toc__no">11</span>ショートカット一覧</a></li></ol></nav></aside>
+
+			<div class="manual__main">
+				<header class="manual__head">
+					<p class="eyebrow"><a href="manual.html">説明書</a> ／ 第6章</p>
+					<h1 class="manual__title"><span class="manual__no">06</span>関数と定数</h1>
+					<p class="manual__summary">使える関数の一覧と、角度・丸めの決まり。</p>
+				</header>
+
+				<div class="entry__body">
+<p>関数はキーパッドの「関数」タブからタップでも入れられます。</p>
+<h2>数をまるめる</h2>
+<figure class="wp-block-table"><table><thead><tr><th>関数</th><th>意味</th></tr></thead><tbody><tr><td><code>round(x)</code></td><td>四捨五入</td></tr><tr><td><code>round(x, 桁)</code></td><td>小数第◯位で四捨五入</td></tr><tr><td><code>floor(x)</code></td><td>切り捨て</td></tr><tr><td><code>ceil(x)</code></td><td>切り上げ</td></tr><tr><td><code>trunc(x)</code></td><td>小数を落とす</td></tr><tr><td><code>abs(x)</code></td><td>絶対値</td></tr></tbody></table></figure>
+<div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">round(3.14159, 2)</code><span class="calc__ans">3.14</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">2</span><code class="calc__expr">ceil(4.1)</code><span class="calc__ans">5</span></div></div>
+<h2>集める</h2>
+<figure class="wp-block-table"><table><thead><tr><th>関数</th><th>意味</th></tr></thead><tbody><tr><td><code>min(…)</code></td><td>最小</td></tr><tr><td><code>max(…)</code></td><td>最大</td></tr><tr><td><code>sum(…)</code></td><td>合計</td></tr><tr><td><code>avg(…)</code></td><td>平均</td></tr><tr><td><code>len(…)</code></td><td>個数・文字数</td></tr></tbody></table></figure>
+<h2>三角関数</h2>
+<figure class="wp-block-table"><table><thead><tr><th>関数</th><th>意味</th></tr></thead><tbody><tr><td><code>sin(x)</code> <code>cos(x)</code> <code>tan(x)</code></td><td>正弦・余弦・正接</td></tr><tr><td><code>asin(x)</code> <code>acos(x)</code> <code>atan(x)</code></td><td>逆関数</td></tr></tbody></table></figure>
+<p>角度は設定の「角度」で度・ラジアンを選べます。式の中で単位を付けて渡すこともできます。</p>
+<div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">sin(30 deg)</code><span class="calc__ans">0.5</span></div></div>
+<h2>対数・累乗・その他</h2>
+<figure class="wp-block-table"><table><thead><tr><th>関数</th><th>意味</th></tr></thead><tbody><tr><td><code>sqrt(x)</code></td><td>平方根</td></tr><tr><td><code>pow(x, y)</code></td><td>累乗（<code>x ^ y</code> と同じ）</td></tr><tr><td><code>ln(x)</code></td><td>自然対数</td></tr><tr><td><code>log(x)</code></td><td>常用対数</td></tr><tr><td><code>log2(x)</code></td><td>2を底とする対数</td></tr><tr><td><code>exp(x)</code></td><td>e の累乗</td></tr><tr><td><code>mod(x, y)</code></td><td>余り</td></tr><tr><td><code>gcd(x, y)</code></td><td>最大公約数</td></tr><tr><td><code>lcm(x, y)</code></td><td>最小公倍数</td></tr><tr><td><code>hypot(x, y)</code></td><td>斜辺の長さ</td></tr></tbody></table></figure>
+<h2>表・文字を扱う</h2>
+<p><code>sort</code> <code>reverse</code> <code>list</code> <code>str</code> は「表と文字」の章をご覧ください。</p>
+<h2>定数</h2>
+<figure class="wp-block-table"><table><thead><tr><th>名前</th><th>値</th></tr></thead><tbody><tr><td><code>pi</code> / <code>π</code></td><td>3.14159265358979…</td></tr><tr><td><code>e</code></td><td>2.71828182845905…</td></tr><tr><td><code>tau</code></td><td>6.28318530717959…</td></tr></tbody></table></figure>
+<h2>小数の桁</h2>
+<p>答えに出す小数の桁数は、設定の「小数桁数」で変えられます。計算そのものは設定に関係なく行われ、表示だけが変わります。</p>
+				</div>
+
+				<nav class="chapter-nav" aria-label="前後の章"><div class="chapter-nav__side"><a href="manual-lists.html"><span class="chapter-nav__label">前の章</span><span class="chapter-nav__title">← 表と文字</span></a></div><div class="chapter-nav__side chapter-nav__side--next"><a href="manual-graph.html"><span class="chapter-nav__label">次の章</span><span class="chapter-nav__title">グラフ →</span></a></div></nav>
+			</div>
+		</div>
+	</article>
+	</main>
+
+	<section class="contact">
+		<div class="wrap contact__inner">
+			<div>
+				<h2 class="contact__title">お困りのときは</h2>
+				<p class="contact__text">使い方のご質問、不具合のご報告、ご要望をお待ちしています。お使いの端末と OS のバージョン、再現する式を添えていただけると助かります。</p>
+			</div>
+			<div><a class="btn" href="support.html">サポートを見る</a></div>
+		</div>
+	</section>
+
+	<footer class="site-footer">
+		<div class="wrap">
+			<div class="site-footer__inner">
+				<div>
+					<a class="brand" href="index.html" rel="home">
+						<span class="brand__mark">19</span>
+						<span class="brand__name">19工房</span>
+					</a>
+					<p class="site-footer__mail"><a href="mailto:tapes-penne05@icloud.com">tapes-penne05@icloud.com</a></p>
+				</div>
+				<nav aria-label="フッターメニュー">
+					<ul>
+						<li><a href="manual.html">使い方</a></li>
+						<li><a href="support.html">サポート</a></li>
+						<li><a href="privacy.html">プライバシーポリシー</a></li>
+						<li><a href="terms.html">利用規約</a></li>
+					</ul>
+				</nav>
+			</div>
+			<div class="colophon">
+				<span>&copy; 2026 19工房</span>
+				<span>このアプリは利用者の情報を収集しません</span>
+			</div>
+		</div>
+	</footer>
+
+</div>
+
+<script src="../wordpress/wp-content/themes/kobo19/assets/js/main.js"></script>
+</body>
+</html>

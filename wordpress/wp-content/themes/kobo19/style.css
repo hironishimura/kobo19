@@ -1,8 +1,8 @@
 /*
-Theme Name: 19工房
+Theme Name: SujiCalc（19工房）
 Theme URI: https://example.com/
 Author: 19工房
-Description: 19工房の制作物（ホームページ・プログラム・プロダクツ）を紹介するオリジナルテーマ。制作物はカスタム投稿タイプ「制作物」で管理し、図面の表題欄をかたどったカードで一覧します。
+Description: アプリ SujiCalc を公開・案内するためのオリジナルテーマ。説明書はカスタム投稿タイプ「説明書」で章ごとに管理し、[calc] ショートコードでアプリの画面と同じ「左に式・右に答え」の形の例を載せられます。
 Version: 1.0.0
 Requires at least: 6.4
 Tested up to: 6.8
@@ -10,7 +10,7 @@ Requires PHP: 8.0
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: kobo19
-Tags: portfolio, custom-post-type, translation-ready, block-styles
+Tags: documentation, custom-post-type, translation-ready, block-styles
 
 このファイルはWordPressがテーマを認識するための情報ファイルです。
 実際のスタイルは assets/css/main.css に書かれています。

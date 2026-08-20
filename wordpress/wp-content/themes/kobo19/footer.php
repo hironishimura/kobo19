@@ -1,27 +1,28 @@
 <?php
 /**
- * フッター。「相談する」の呼びかけと、サイト情報。
+ * フッター。サポートの案内と、サイト情報。
  *
  * @package kobo19
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$kobo19_contact_page = get_page_by_path( 'contact' );
-$kobo19_email        = kobo19_option( 'kobo19_contact_email' );
+$kobo19_support = kobo19_page_link( 'support' );
+$kobo19_email   = kobo19_option( 'kobo19_contact_email' );
+$kobo19_manual  = get_post_type_archive_link( 'manual' );
 ?>
 	</main>
 
-	<?php if ( $kobo19_contact_page || $kobo19_email ) : ?>
+	<?php if ( $kobo19_support || $kobo19_email ) : ?>
 	<section class="contact">
 		<div class="wrap contact__inner">
 			<div>
-				<h2 class="contact__title"><?php echo esc_html( kobo19_option( 'kobo19_contact_label', '相談する' ) ); ?></h2>
-				<p class="contact__text"><?php echo esc_html( kobo19_option( 'kobo19_contact_text', 'つくりたいものが決まっていなくても構いません。困っている作業の話から始めましょう。' ) ); ?></p>
+				<h2 class="contact__title">お困りのときは</h2>
+				<p class="contact__text">使い方のご質問、不具合のご報告、ご要望をお待ちしています。お使いの端末と OS のバージョン、再現する式を添えていただけると助かります。</p>
 			</div>
 			<div>
-				<?php if ( $kobo19_contact_page ) : ?>
-					<a class="btn" href="<?php echo esc_url( get_permalink( $kobo19_contact_page ) ); ?>">問い合わせる</a>
+				<?php if ( $kobo19_support ) : ?>
+					<a class="btn" href="<?php echo esc_url( $kobo19_support['url'] ); ?>">サポートを見る</a>
 				<?php elseif ( $kobo19_email ) : ?>
 					<a class="btn" href="mailto:<?php echo esc_attr( $kobo19_email ); ?>">メールを送る</a>
 				<?php endif; ?>
@@ -40,7 +41,7 @@ $kobo19_email        = kobo19_option( 'kobo19_contact_email' );
 						<span class="brand__name"><?php bloginfo( 'name' ); ?></span>
 					</a>
 					<?php if ( $kobo19_email ) : ?>
-						<p style="margin-top:1rem;">
+						<p class="site-footer__mail">
 							<a href="mailto:<?php echo esc_attr( $kobo19_email ); ?>"><?php echo esc_html( $kobo19_email ); ?></a>
 						</p>
 					<?php endif; ?>
@@ -58,16 +59,31 @@ $kobo19_email        = kobo19_option( 'kobo19_contact_email' );
 							)
 						);
 					} else {
-						echo '<ul>';
-						foreach ( kobo19_ordered_categories() as $term ) {
-							$link = get_term_link( $term );
-							if ( is_wp_error( $link ) ) {
-								continue;
+						$kobo19_links = array();
+
+						if ( $kobo19_manual ) {
+							$kobo19_links[] = array(
+								'url'   => $kobo19_manual,
+								'label' => '使い方',
+							);
+						}
+
+						foreach ( array( 'support', 'privacy', 'terms' ) as $kobo19_slug ) {
+							$kobo19_page = kobo19_page_link( $kobo19_slug );
+							if ( $kobo19_page ) {
+								$kobo19_links[] = array(
+									'url'   => $kobo19_page['url'],
+									'label' => $kobo19_page['title'],
+								);
 							}
+						}
+
+						echo '<ul>';
+						foreach ( $kobo19_links as $kobo19_link ) {
 							printf(
 								'<li><a href="%s">%s</a></li>',
-								esc_url( $link ),
-								esc_html( $term->name )
+								esc_url( $kobo19_link['url'] ),
+								esc_html( $kobo19_link['label'] )
 							);
 						}
 						echo '</ul>';
@@ -82,7 +98,7 @@ $kobo19_email        = kobo19_option( 'kobo19_contact_email' );
 
 			<div class="colophon">
 				<span>&copy; <?php echo esc_html( kobo19_option( 'kobo19_established', '2026' ) ); ?>–<?php echo esc_html( gmdate( 'Y' ) ); ?> <?php bloginfo( 'name' ); ?></span>
-				<span>制作物 <?php echo esc_html( (string) kobo19_work_count() ); ?> 点</span>
+				<span>このアプリは利用者の情報を収集しません</span>
 			</div>
 
 		</div>

@@ -16,12 +16,12 @@ while ( have_posts() ) :
 <article class="entry">
 	<div class="wrap">
 		<header>
-			<p class="eyebrow"><?php echo esc_html( get_bloginfo( 'name' ) ); ?></p>
+			<p class="eyebrow"><?php echo esc_html( kobo19_option( 'kobo19_app_name', 'SujiCalc' ) ); ?></p>
 			<h1 class="entry__title"><?php the_title(); ?></h1>
 		</header>
 
 		<?php if ( has_post_thumbnail() ) : ?>
-			<figure class="work-single__figure">
+			<figure class="entry__figure">
 				<?php the_post_thumbnail( 'large' ); ?>
 			</figure>
 		<?php endif; ?>

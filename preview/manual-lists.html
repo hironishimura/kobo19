@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>表と文字｜SujiCalc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../wordpress/wp-content/themes/kobo19/assets/css/main.css">
+</head>
+<body>
+<a class="skip-link" href="#main">本文へ移動</a>
+
+<div class="site">
+
+	<header class="site-header">
+		<div class="wrap site-header__inner">
+			<a class="brand" href="index.html" rel="home">
+				<span class="brand__mark">19</span>
+				<span class="brand__name">19工房</span>
+				<span class="brand__tagline">つくったものを置いておく場所</span>
+			</a>
+
+			<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">メニュー</button>
+
+			<nav class="nav" id="site-nav" aria-label="メインメニュー">
+				<ul>
+					<li><a href="manual.html">使い方</a></li>
+					<li><a href="support.html">サポート</a></li>
+					<li><a href="privacy.html">プライバシー</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<main id="main">
+
+	<article class="manual">
+		<div class="wrap manual__grid">
+			<aside class="manual__side"><nav class="toc" aria-label="説明書の目次"><p class="toc__title">説明書</p><ol class="toc__list"><li class="toc__item"><a href="manual-getting-started.html"><span class="toc__no">01</span>はじめに</a></li><li class="toc__item"><a href="manual-basics.html"><span class="toc__no">02</span>基本の書きかた</a></li><li class="toc__item"><a href="manual-units.html"><span class="toc__no">03</span>単位</a></li><li class="toc__item"><a href="manual-names.html"><span class="toc__no">04</span>名前と参照</a></li><li class="toc__item is-current"><a href="manual-lists.html" aria-current="page"><span class="toc__no">05</span>表と文字</a></li><li class="toc__item"><a href="manual-functions.html"><span class="toc__no">06</span>関数と定数</a></li><li class="toc__item"><a href="manual-graph.html"><span class="toc__no">07</span>グラフ</a></li><li class="toc__item"><a href="manual-program.html"><span class="toc__no">08</span>プログラム</a></li><li class="toc__item"><a href="manual-sheets.html"><span class="toc__no">09</span>シートと同期</a></li><li class="toc__item"><a href="manual-keypad.html"><span class="toc__no">10</span>キーパッドと設定</a></li><li class="toc__item"><a href="manual-shortcuts.html"><span class="toc__no">11</span>ショートカット一覧</a></li></ol></nav></aside>
+
+			<div class="manual__main">
+				<header class="manual__head">
+					<p class="eyebrow"><a href="manual.html">説明書</a> ／ 第5章</p>
+					<h1 class="manual__title"><span class="manual__no">05</span>表と文字</h1>
+					<p class="manual__summary">値を並べて集計する。文字を混ぜて計算書の見出しを作る。</p>
+				</header>
+
+				<div class="entry__body">
+<h2>表（リスト）</h2>
+<p>角かっこで囲むと、値を並べて持てます。</p>
+<div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">価格 = [4800, 12000, 3200]</code><span class="calc__ans">[4,800, 12,000, 3,200]</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">2</span><code class="calc__expr">sum(価格)</code><span class="calc__ans">20,000</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">3</span><code class="calc__expr">avg(価格)</code><span class="calc__ans">6,666.6666666667</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">4</span><code class="calc__expr">max(価格)</code><span class="calc__ans">12,000</span></div></div>
+<h3>取り出す・つなぐ・くり返す</h3>
+<figure class="wp-block-table"><table><thead><tr><th>書き方</th><th>意味</th></tr></thead><tbody><tr><td><code>価格[0]</code></td><td>1つめ（0から数えます）</td></tr><tr><td><code>価格[-1]</code></td><td>最後</td></tr><tr><td><code>価格 + [7]</code></td><td>うしろにつなぐ</td></tr><tr><td><code>価格 * 3</code></td><td>3回くり返す</td></tr><tr><td><code>len(価格)</code></td><td>個数</td></tr><tr><td><code>sort(価格)</code></td><td>小さい順に並べ替える</td></tr><tr><td><code>reverse(価格)</code></td><td>逆順にする</td></tr></tbody></table></figure>
+<p><code>sum</code> <code>avg</code> <code>min</code> <code>max</code> は、表を丸ごと受け取れます。<code>for x in 価格:</code> のように繰り返しにも使えます。</p>
+<h2>文字</h2>
+<p>引用符で囲むと文字になります。</p>
+<div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">&quot;8月分 見積もり&quot;</code><span class="calc__ans">&quot;8月分 見積もり&quot;</span></div></div>
+<p><code>+</code> でつなげるのは<strong>文字どうしだけ</strong>です。<code>"梁幅 " + 120</code> はエラーになり、<code>str(値)</code> を使うよう案内が出ます。数と文字が黙って混ざらないようにするためです。</p>
+<p><code>"ab" * 3</code> はくり返し、<code>len</code> と <code>reverse</code>、<code>文字[0]</code> が使えます。</p>
+<h2>表と文字は合計に入らない</h2>
+<p>表や文字の行は <code>sum</code> <code>total</code> に入りません。<code>+</code> が「つなぐ」意味になってしまい、合計が別のものになるためです。</p>
+<h2>大きさの上限</h2>
+<p><code>[1] * 200000</code> のような膨らみ方は途中で止まります（10万個）。答えの欄の表示も100個で打ち切り、「… 全 N 個」と出ます。</p>
+				</div>
+
+				<nav class="chapter-nav" aria-label="前後の章"><div class="chapter-nav__side"><a href="manual-names.html"><span class="chapter-nav__label">前の章</span><span class="chapter-nav__title">← 名前と参照</span></a></div><div class="chapter-nav__side chapter-nav__side--next"><a href="manual-functions.html"><span class="chapter-nav__label">次の章</span><span class="chapter-nav__title">関数と定数 →</span></a></div></nav>
+			</div>
+		</div>
+	</article>
+	</main>
+
+	<section class="contact">
+		<div class="wrap contact__inner">
+			<div>
+				<h2 class="contact__title">お困りのときは</h2>
+				<p class="contact__text">使い方のご質問、不具合のご報告、ご要望をお待ちしています。お使いの端末と OS のバージョン、再現する式を添えていただけると助かります。</p>
+			</div>
+			<div><a class="btn" href="support.html">サポートを見る</a></div>
+		</div>
+	</section>
+
+	<footer class="site-footer">
+		<div class="wrap">
+			<div class="site-footer__inner">
+				<div>
+					<a class="brand" href="index.html" rel="home">
+						<span class="brand__mark">19</span>
+						<span class="brand__name">19工房</span>
+					</a>
+					<p class="site-footer__mail"><a href="mailto:tapes-penne05@icloud.com">tapes-penne05@icloud.com</a></p>
+				</div>
+				<nav aria-label="フッターメニュー">
+					<ul>
+						<li><a href="manual.html">使い方</a></li>
+						<li><a href="support.html">サポート</a></li>
+						<li><a href="privacy.html">プライバシーポリシー</a></li>
+						<li><a href="terms.html">利用規約</a></li>
+					</ul>
+				</nav>
+			</div>
+			<div class="colophon">
+				<span>&copy; 2026 19工房</span>
+				<span>このアプリは利用者の情報を収集しません</span>
+			</div>
+		</div>
+	</footer>
+
+</div>
+
+<script src="../wordpress/wp-content/themes/kobo19/assets/js/main.js"></script>
+</body>
+</html>

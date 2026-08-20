@@ -56,41 +56,27 @@ defined( 'ABSPATH' ) || exit;
 					);
 				} else {
 					// メニューが未設定のときの初期表示。
-					$fallback = array(
-						array(
-							'url'   => get_post_type_archive_link( 'work' ),
-							'label' => '制作物',
-						),
-					);
+					$fallback = array();
 
-					foreach ( kobo19_ordered_categories() as $term ) {
-						$fallback[] = array(
-							'url'   => get_term_link( $term ),
-							'label' => $term->name,
-						);
+					$manual = get_post_type_archive_link( 'manual' );
+					if ( $manual ) {
+						$fallback[] = array( 'url' => $manual, 'label' => '使い方' );
 					}
 
-					$about = get_page_by_path( 'about' );
-					if ( $about ) {
-						$fallback[] = array(
-							'url'   => get_permalink( $about ),
-							'label' => '工房について',
-						);
+					foreach ( array( 'support' => 'サポート', 'privacy' => 'プライバシー' ) as $slug => $label ) {
+						$page = kobo19_page_link( $slug );
+						if ( $page ) {
+							$fallback[] = array( 'url' => $page['url'], 'label' => $label );
+						}
 					}
 
-					$contact = get_page_by_path( 'contact' );
-					if ( $contact ) {
-						$fallback[] = array(
-							'url'   => get_permalink( $contact ),
-							'label' => '相談する',
-						);
+					$store = kobo19_option( 'kobo19_appstore_url' );
+					if ( $store ) {
+						$fallback[] = array( 'url' => $store, 'label' => 'App Store' );
 					}
 
 					echo '<ul>';
 					foreach ( $fallback as $item ) {
-						if ( is_wp_error( $item['url'] ) || ! $item['url'] ) {
-							continue;
-						}
 						printf(
 							'<li><a href="%s">%s</a></li>',
 							esc_url( $item['url'] ),

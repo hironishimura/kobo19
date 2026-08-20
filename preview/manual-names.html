@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>名前と参照｜SujiCalc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../wordpress/wp-content/themes/kobo19/assets/css/main.css">
+</head>
+<body>
+<a class="skip-link" href="#main">本文へ移動</a>
+
+<div class="site">
+
+	<header class="site-header">
+		<div class="wrap site-header__inner">
+			<a class="brand" href="index.html" rel="home">
+				<span class="brand__mark">19</span>
+				<span class="brand__name">19工房</span>
+				<span class="brand__tagline">つくったものを置いておく場所</span>
+			</a>
+
+			<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">メニュー</button>
+
+			<nav class="nav" id="site-nav" aria-label="メインメニュー">
+				<ul>
+					<li><a href="manual.html">使い方</a></li>
+					<li><a href="support.html">サポート</a></li>
+					<li><a href="privacy.html">プライバシー</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<main id="main">
+
+	<article class="manual">
+		<div class="wrap manual__grid">
+			<aside class="manual__side"><nav class="toc" aria-label="説明書の目次"><p class="toc__title">説明書</p><ol class="toc__list"><li class="toc__item"><a href="manual-getting-started.html"><span class="toc__no">01</span>はじめに</a></li><li class="toc__item"><a href="manual-basics.html"><span class="toc__no">02</span>基本の書きかた</a></li><li class="toc__item"><a href="manual-units.html"><span class="toc__no">03</span>単位</a></li><li class="toc__item is-current"><a href="manual-names.html" aria-current="page"><span class="toc__no">04</span>名前と参照</a></li><li class="toc__item"><a href="manual-lists.html"><span class="toc__no">05</span>表と文字</a></li><li class="toc__item"><a href="manual-functions.html"><span class="toc__no">06</span>関数と定数</a></li><li class="toc__item"><a href="manual-graph.html"><span class="toc__no">07</span>グラフ</a></li><li class="toc__item"><a href="manual-program.html"><span class="toc__no">08</span>プログラム</a></li><li class="toc__item"><a href="manual-sheets.html"><span class="toc__no">09</span>シートと同期</a></li><li class="toc__item"><a href="manual-keypad.html"><span class="toc__no">10</span>キーパッドと設定</a></li><li class="toc__item"><a href="manual-shortcuts.html"><span class="toc__no">11</span>ショートカット一覧</a></li></ol></nav></aside>
+
+			<div class="manual__main">
+				<header class="manual__head">
+					<p class="eyebrow"><a href="manual.html">説明書</a> ／ 第4章</p>
+					<h1 class="manual__title"><span class="manual__no">04</span>名前と参照</h1>
+					<p class="manual__summary">値に名前を付けて呼び出す。prev・#3・sum・total の使い分け。</p>
+				</header>
+
+				<div class="entry__body">
+<h2>名前を付ける</h2>
+<p><code>名前 = 値</code> と書くと、ほかの行から呼び出せます。</p>
+<div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">梁幅 = 120 mm</code><span class="calc__ans">120 mm</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">2</span><code class="calc__expr">梁せい = 300 mm</code><span class="calc__ans">300 mm</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">3</span><code class="calc__expr">断面積 = 梁幅 * 梁せい</code><span class="calc__ans">36,000 mm²</span></div></div>
+<p>日本語でも英語でも構いません。</p>
+<h2>答えをクリックして使う</h2>
+<p>右の答えをクリック（iPhone・iPad はタップ）すると、その値がいまカーソルのある場所に入ります。引っぱって式の中へ落とすこともできます。</p>
+<p>名前の無い行だったときは自動で名前が付く（<code>x1</code> など）ので、あとから何度でも呼び出せます。</p>
+<h2>名前を付け替えると、使っている行もまとめて変わる</h2>
+<p>答えを右クリック（iPhone・iPad は長押し）すると、その行に名前を付けたり付け替えたりできます。</p>
+<p><strong>すでに名前がある行を付け替えると、その名前を使っている行もまとめて書き換わります。</strong> <code>単価</code> を <code>原価</code> に変えれば、<code>単価 * 個数</code> も <code>原価 * 個数</code> になります。</p>
+<p>名前の一部が同じなだけの語（<code>単価計</code>）や、メモの行は巻き込みません。</p>
+<h2>そのほかの呼び出し方</h2>
+<figure class="wp-block-table"><table><thead><tr><th>書き方</th><th>意味</th></tr></thead><tbody><tr><td><code>prev</code> / <code>ans</code></td><td>前の行の答え</td></tr><tr><td><code>#3</code></td><td>3行目の答え</td></tr><tr><td><code>sum</code></td><td>直前の空行から、ここまでの合計</td></tr><tr><td><code>total</code></td><td>先頭から、ここまでの合計</td></tr></tbody></table></figure>
+<div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">12000</code><span class="calc__ans">12,000</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">2</span><code class="calc__expr">8400</code><span class="calc__ans">8,400</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">3</span><code class="calc__expr">3200</code><span class="calc__ans">3,200</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">4</span><code class="calc__expr">sum</code><span class="calc__ans">23,600</span></div></div>
+<p>空行を入れるとまとまりが切れるので、<code>sum</code> の範囲もそこで切れます。項目ごとに小計を出したいときに使います。</p>
+<h2>使えない名前</h2>
+<p><code>prev</code> <code>sum</code> <code>total</code> や、単位・関数と同じ名前は付けられません。<code>sum = 5</code> はエラーになります。</p>
+<p>黙って無視すると、<code>sum</code> を書いた行が思ったものと違う値になっていても気づけないためです。</p>
+<h2>合計できないとき</h2>
+<p><code>sum</code> や <code>total</code> は、<strong>種類の違う単位が混ざっているとエラー</strong>になります。足せないものを飛ばして一部だけの合計を出すことはしません。</p>
+<p>表（リスト）や文字の行も合計には入りません。</p>
+<h2>名前の一覧</h2>
+<p>Mac と iPad では、左の欄に「名前の付いた値」が並びます。押すとカーソル位置にその名前が入ります。iPhone ではツールバーの ☰ から開きます。</p>
+<p>この一覧は設定で出し入れできます（設定 → 表示）。</p>
+				</div>
+
+				<nav class="chapter-nav" aria-label="前後の章"><div class="chapter-nav__side"><a href="manual-units.html"><span class="chapter-nav__label">前の章</span><span class="chapter-nav__title">← 単位</span></a></div><div class="chapter-nav__side chapter-nav__side--next"><a href="manual-lists.html"><span class="chapter-nav__label">次の章</span><span class="chapter-nav__title">表と文字 →</span></a></div></nav>
+			</div>
+		</div>
+	</article>
+	</main>
+
+	<section class="contact">
+		<div class="wrap contact__inner">
+			<div>
+				<h2 class="contact__title">お困りのときは</h2>
+				<p class="contact__text">使い方のご質問、不具合のご報告、ご要望をお待ちしています。お使いの端末と OS のバージョン、再現する式を添えていただけると助かります。</p>
+			</div>
+			<div><a class="btn" href="support.html">サポートを見る</a></div>
+		</div>
+	</section>
+
+	<footer class="site-footer">
+		<div class="wrap">
+			<div class="site-footer__inner">
+				<div>
+					<a class="brand" href="index.html" rel="home">
+						<span class="brand__mark">19</span>
+						<span class="brand__name">19工房</span>
+					</a>
+					<p class="site-footer__mail"><a href="mailto:tapes-penne05@icloud.com">tapes-penne05@icloud.com</a></p>
+				</div>
+				<nav aria-label="フッターメニュー">
+					<ul>
+						<li><a href="manual.html">使い方</a></li>
+						<li><a href="support.html">サポート</a></li>
+						<li><a href="privacy.html">プライバシーポリシー</a></li>
+						<li><a href="terms.html">利用規約</a></li>
+					</ul>
+				</nav>
+			</div>
+			<div class="colophon">
+				<span>&copy; 2026 19工房</span>
+				<span>このアプリは利用者の情報を収集しません</span>
+			</div>
+		</div>
+	</footer>
+
+</div>
+
+<script src="../wordpress/wp-content/themes/kobo19/assets/js/main.js"></script>
+</body>
+</html>

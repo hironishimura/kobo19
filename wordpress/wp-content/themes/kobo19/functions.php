@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
 define( 'KOBO19_VERSION', '1.0.0' );
 
 require_once get_template_directory() . '/inc/cpt.php';
-require_once get_template_directory() . '/inc/meta-box.php';
+require_once get_template_directory() . '/inc/shortcodes.php';
 require_once get_template_directory() . '/inc/template-tags.php';
 require_once get_template_directory() . '/inc/customizer.php';
 require_once get_template_directory() . '/inc/demo-content.php';
@@ -45,7 +45,7 @@ function kobo19_setup() {
 
 	add_editor_style( 'assets/css/editor.css' );
 
-	add_image_size( 'kobo19-card', 960, 640, true );
+	add_image_size( 'kobo19-shot', 900, 1800, false );
 
 	register_nav_menus( array(
 		'primary' => 'ヘッダーのメニュー',
@@ -135,13 +135,8 @@ add_filter( 'wp_resource_hints', 'kobo19_resource_hints', 10, 2 );
  * @return string[]
  */
 function kobo19_body_classes( $classes ) {
-	if ( is_singular( 'work' ) ) {
-		$classes[] = 'is-work is-cat-' . kobo19_work_category_slug();
-	}
-
-	if ( is_tax( 'work_category' ) ) {
-		$term      = get_queried_object();
-		$classes[] = 'is-cat-' . $term->slug;
+	if ( is_singular( 'manual' ) || is_post_type_archive( 'manual' ) ) {
+		$classes[] = 'is-manual';
 	}
 
 	return $classes;
@@ -169,7 +164,6 @@ add_action( 'widgets_init', 'kobo19_widgets_init' );
  * パーマリンクを書き直す。
  */
 function kobo19_after_switch_theme() {
-	kobo19_seed_work_categories();
 	kobo19_install_demo_content();
 	kobo19_setup_front_page();
 	flush_rewrite_rules();
@@ -190,7 +184,7 @@ function kobo19_setup_front_page() {
 
 	if ( ! $home ) {
 		$home_id = wp_insert_post( array(
-			'post_title'   => '19工房',
+			'post_title'   => kobo19_option( 'kobo19_app_name', 'SujiCalc' ),
 			'post_name'    => 'home',
 			'post_status'  => 'publish',
 			'post_type'    => 'page',

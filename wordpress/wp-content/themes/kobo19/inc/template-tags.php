@@ -8,153 +8,111 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * 制作物の図番を返す。
+ * 説明書の章を、順序どおりに並べて返す。
  *
- * 手入力があればそれを使い、無ければ区分の頭文字＋通し番号を組み立てます。
- * ホームページ=W、プログラム=P、プロダクツ=D。
- *
- * @param int|null $post_id 投稿ID。
- * @return string
+ * @return WP_Post[]
  */
-function kobo19_drawing_no( $post_id = null ) {
-	$post_id = $post_id ? $post_id : get_the_ID();
-	$manual  = get_post_meta( $post_id, '_kobo19_drawing_no', true );
+function kobo19_manual_chapters() {
+	static $chapters = null;
 
-	if ( $manual ) {
-		return $manual;
+	if ( null !== $chapters ) {
+		return $chapters;
 	}
 
-	$prefixes = array(
-		'homepage' => 'W',
-		'program'  => 'P',
-		'product'  => 'D',
-	);
-
-	$terms  = get_the_terms( $post_id, 'work_category' );
-	$prefix = 'K';
-
-	if ( $terms && ! is_wp_error( $terms ) ) {
-		$slug   = $terms[0]->slug;
-		$prefix = isset( $prefixes[ $slug ] ) ? $prefixes[ $slug ] : strtoupper( substr( $slug, 0, 1 ) );
-	}
-
-	$order = (int) get_post_field( 'menu_order', $post_id );
-	if ( $order < 1 ) {
-		$order = 1;
-	}
-
-	return sprintf( '%s-%02d', $prefix, $order );
-}
-
-/**
- * 制作物の区分名を返す。
- *
- * @param int|null $post_id 投稿ID。
- * @return string
- */
-function kobo19_work_category_name( $post_id = null ) {
-	$post_id = $post_id ? $post_id : get_the_ID();
-	$terms   = get_the_terms( $post_id, 'work_category' );
-
-	if ( ! $terms || is_wp_error( $terms ) ) {
-		return '未分類';
-	}
-
-	return $terms[0]->name;
-}
-
-/**
- * 制作物の区分スラッグを返す。CSSの色分けに使います。
- *
- * @param int|null $post_id 投稿ID。
- * @return string
- */
-function kobo19_work_category_slug( $post_id = null ) {
-	$post_id = $post_id ? $post_id : get_the_ID();
-	$terms   = get_the_terms( $post_id, 'work_category' );
-
-	if ( ! $terms || is_wp_error( $terms ) ) {
-		return 'none';
-	}
-
-	return $terms[0]->slug;
-}
-
-/**
- * 表題欄の値を取り出す。
- *
- * @param string   $key     フィールドキー（drawing_no を除く）。
- * @param int|null $post_id 投稿ID。
- * @return string
- */
-function kobo19_meta( $key, $post_id = null ) {
-	$post_id = $post_id ? $post_id : get_the_ID();
-	return (string) get_post_meta( $post_id, '_kobo19_' . $key, true );
-}
-
-/**
- * 材料（技術）をスラッシュ区切りの配列にして返す。
- *
- * @param int|null $post_id 投稿ID。
- * @return string[]
- */
-function kobo19_stack_list( $post_id = null ) {
-	$raw = kobo19_meta( 'stack', $post_id );
-
-	if ( '' === $raw ) {
-		return array();
-	}
-
-	$items = preg_split( '#\s*[/／]\s*#u', $raw );
-
-	return array_values( array_filter( array_map( 'trim', $items ) ) );
-}
-
-/**
- * 区分をカスタマイザーで決めた順に並べて返す。
- *
- * @return WP_Term[]
- */
-function kobo19_ordered_categories() {
-	$terms = get_terms(
+	$chapters = get_posts(
 		array(
-			'taxonomy'   => 'work_category',
-			'hide_empty' => false,
+			'post_type'      => 'manual',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'orderby'        => array(
+				'menu_order' => 'ASC',
+				'date'       => 'ASC',
+			),
+			'order'          => 'ASC',
 		)
 	);
 
-	if ( is_wp_error( $terms ) || empty( $terms ) ) {
-		return array();
-	}
-
-	usort(
-		$terms,
-		function ( $a, $b ) {
-			$order_a = (int) get_term_meta( $a->term_id, 'kobo19_order', true );
-			$order_b = (int) get_term_meta( $b->term_id, 'kobo19_order', true );
-
-			$order_a = $order_a ? $order_a : 99;
-			$order_b = $order_b ? $order_b : 99;
-
-			if ( $order_a === $order_b ) {
-				return strcmp( $a->slug, $b->slug );
-			}
-
-			return $order_a <=> $order_b;
-		}
-	);
-
-	return $terms;
+	return $chapters;
 }
 
 /**
- * 公開中の制作物の総数を返す。
+ * 章の通し番号を返す。並びの何番目かで決まります。
  *
- * @return int
+ * @param int|null $post_id 投稿ID。
+ * @return int 見つからなければ 0。
  */
-function kobo19_work_count() {
-	$counts = wp_count_posts( 'work' );
-	return isset( $counts->publish ) ? (int) $counts->publish : 0;
+function kobo19_chapter_number( $post_id = null ) {
+	$post_id = $post_id ? $post_id : get_the_ID();
+
+	foreach ( kobo19_manual_chapters() as $index => $chapter ) {
+		if ( (int) $chapter->ID === (int) $post_id ) {
+			return $index + 1;
+		}
+	}
+
+	return 0;
+}
+
+/**
+ * 章番号を「01」の形にして返す。
+ *
+ * @param int|null $post_id 投稿ID。
+ * @return string
+ */
+function kobo19_chapter_label( $post_id = null ) {
+	$number = kobo19_chapter_number( $post_id );
+
+	return $number ? sprintf( '%02d', $number ) : '—';
+}
+
+/**
+ * いま見ている章の前後を返す。
+ *
+ * @param int|null $post_id 投稿ID。
+ * @return array{prev: ?WP_Post, next: ?WP_Post}
+ */
+function kobo19_chapter_siblings( $post_id = null ) {
+	$post_id  = $post_id ? $post_id : get_the_ID();
+	$chapters = kobo19_manual_chapters();
+	$index    = kobo19_chapter_number( $post_id ) - 1;
+
+	return array(
+		'prev' => ( $index > 0 && isset( $chapters[ $index - 1 ] ) ) ? $chapters[ $index - 1 ] : null,
+		'next' => isset( $chapters[ $index + 1 ] ) ? $chapters[ $index + 1 ] : null,
+	);
+}
+
+/**
+ * 説明書の目次を出力する。章のページでは、いま見ている章に印を付けます。
+ *
+ * @param int|null $current_id いま見ている章のID。
+ */
+function kobo19_manual_toc( $current_id = null ) {
+	$chapters = kobo19_manual_chapters();
+
+	if ( ! $chapters ) {
+		return;
+	}
+
+	echo '<nav class="toc" aria-label="説明書の目次">';
+	echo '<p class="toc__title">説明書</p>';
+	echo '<ol class="toc__list">';
+
+	foreach ( $chapters as $index => $chapter ) {
+		$is_current = ( (int) $chapter->ID === (int) $current_id );
+
+		printf(
+			'<li class="toc__item%s"><a href="%s"%s><span class="toc__no">%02d</span>%s</a></li>',
+			$is_current ? ' is-current' : '',
+			esc_url( get_permalink( $chapter ) ),
+			$is_current ? ' aria-current="page"' : '',
+			$index + 1,
+			esc_html( get_the_title( $chapter ) )
+		);
+	}
+
+	echo '</ol>';
+	echo '</nav>';
 }
 
 /**
@@ -167,7 +125,7 @@ function kobo19_summary( $length = 90 ) {
 	$text = get_the_excerpt();
 
 	if ( '' === trim( $text ) ) {
-		$text = wp_strip_all_tags( get_the_content() );
+		$text = wp_strip_all_tags( strip_shortcodes( get_the_content() ) );
 	}
 
 	$text = trim( preg_replace( '/\s+/u', ' ', $text ) );
@@ -180,18 +138,20 @@ function kobo19_summary( $length = 90 ) {
 }
 
 /**
- * 制作物の詳細ページで使う、前後の制作物へのリンクを出力する。
+ * 固定ページを、あれば URL つきで返す。
+ *
+ * @param string $slug スラッグ。
+ * @return array{url: string, title: string}|null
  */
-function kobo19_work_pagination() {
-	$prev = get_previous_post_link( '%link', '← %title' );
-	$next = get_next_post_link( '%link', '%title →' );
+function kobo19_page_link( $slug ) {
+	$page = get_page_by_path( $slug );
 
-	if ( ! $prev && ! $next ) {
-		return;
+	if ( ! $page ) {
+		return null;
 	}
 
-	echo '<nav class="work-nav" aria-label="制作物の前後">';
-	echo '<div class="work-nav__side">' . wp_kses_post( $prev ) . '</div>';
-	echo '<div class="work-nav__side work-nav__side--next">' . wp_kses_post( $next ) . '</div>';
-	echo '</nav>';
+	return array(
+		'url'   => get_permalink( $page ),
+		'title' => get_the_title( $page ),
+	);
 }

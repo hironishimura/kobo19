@@ -1,8 +1,8 @@
 <?php
 /**
- * カスタマイザーの設定。屋号・肩書き・連絡先など、画面の文言をここで変えられます。
+ * カスタマイザーの設定。アプリの名前・価格・App Store の URL などをここで変えられます。
  *
- * 外観 → カスタマイズ → 「19工房の設定」から編集します。
+ * 外観 → カスタマイズ → 「アプリの情報」から編集します。
  *
  * @package kobo19
  */
@@ -19,43 +19,58 @@ function kobo19_customize_register( $wp_customize ) {
 	$wp_customize->get_setting( 'blogdescription' )->transport = 'postMessage';
 
 	$wp_customize->add_section(
-		'kobo19_settings',
+		'kobo19_app',
 		array(
-			'title'       => '19工房の設定',
+			'title'       => 'アプリの情報',
 			'priority'    => 30,
-			'description' => 'トップページの見出しやフッターの連絡先を編集します。',
+			'description' => 'トップページに出るアプリの名前・説明・配布先を編集します。',
 		)
 	);
 
 	$fields = array(
-		'kobo19_hero_eyebrow'  => array(
-			'label'   => 'トップの小見出し',
-			'default' => 'WORKSHOP 19',
+		'kobo19_app_name'      => array(
+			'label'   => 'アプリの名前',
+			'default' => 'SujiCalc',
 			'type'    => 'text',
 		),
-		'kobo19_hero_title'    => array(
-			'label'   => 'トップの見出し',
-			'default' => "つくるものは違っても、\nやることは同じです。",
-			'type'    => 'textarea',
+		'kobo19_app_tagline'   => array(
+			'label'   => '一行の説明',
+			'default' => '打つと右に答えが出る、ノート型の電卓。',
+			'type'    => 'text',
 		),
-		'kobo19_hero_lead'     => array(
+		'kobo19_app_lead'      => array(
 			'label'   => 'トップの説明文',
-			'default' => 'サイトも、業務の道具も、Macアプリも、3Dモデルも。何が要るのかを聞いて、図面を引いて、寸法を決めて、動くところまで持っていく。19工房はその繰り返しでできています。',
+			'default' => "式を打つと、その行の右側にすぐ答えが出ます。「＝」は要りません。\n書いた式はそのまま残るので、あとから数字を直せば、続きの計算も一度に合い直ります。",
 			'type'    => 'textarea',
 		),
-		'kobo19_contact_label' => array(
-			'label'   => 'フッターの連絡先の見出し',
-			'default' => '相談する',
+		'kobo19_appstore_url'  => array(
+			'label'   => 'App Store の URL',
+			'default' => '',
+			'type'    => 'url',
+		),
+		'kobo19_app_price'     => array(
+			'label'   => '価格の表示',
+			'default' => '',
 			'type'    => 'text',
 		),
-		'kobo19_contact_text'  => array(
-			'label'   => 'フッターの連絡先の説明',
-			'default' => 'つくりたいものが決まっていなくても構いません。困っている作業の話から始めましょう。',
-			'type'    => 'textarea',
+		'kobo19_app_version'   => array(
+			'label'   => 'バージョン',
+			'default' => '1.0',
+			'type'    => 'text',
+		),
+		'kobo19_app_requires'  => array(
+			'label'   => '対応する OS',
+			'default' => 'iOS 17 / iPadOS 17 / macOS 14 以降',
+			'type'    => 'text',
+		),
+		'kobo19_app_size'      => array(
+			'label'   => 'カテゴリ',
+			'default' => '仕事効率化',
+			'type'    => 'text',
 		),
 		'kobo19_contact_email' => array(
 			'label'   => '連絡先メールアドレス',
-			'default' => '',
+			'default' => 'tapes-penne05@icloud.com',
 			'type'    => 'text',
 		),
 		'kobo19_established'   => array(
@@ -70,7 +85,7 @@ function kobo19_customize_register( $wp_customize ) {
 			$id,
 			array(
 				'default'           => $field['default'],
-				'sanitize_callback' => 'textarea' === $field['type'] ? 'wp_kses_post' : 'sanitize_text_field',
+				'sanitize_callback' => 'url' === $field['type'] ? 'esc_url_raw' : ( 'textarea' === $field['type'] ? 'wp_kses_post' : 'sanitize_text_field' ),
 				'transport'         => 'refresh',
 			)
 		);
@@ -79,8 +94,8 @@ function kobo19_customize_register( $wp_customize ) {
 			$id,
 			array(
 				'label'   => $field['label'],
-				'section' => 'kobo19_settings',
-				'type'    => $field['type'],
+				'section' => 'kobo19_app',
+				'type'    => 'url' === $field['type'] ? 'url' : $field['type'],
 			)
 		);
 	}
