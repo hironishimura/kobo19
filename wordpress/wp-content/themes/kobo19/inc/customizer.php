@@ -1,8 +1,9 @@
 <?php
 /**
- * カスタマイザーの設定。アプリの名前・価格・App Store の URL などをここで変えられます。
+ * カスタマイザーの設定。
  *
- * 外観 → カスタマイズ → 「アプリの情報」から編集します。
+ * アプリごとの情報（名前・App Store の URL・バージョンなど）は、
+ * それぞれのアプリの編集画面で入れます。ここはサイト全体の設定だけです。
  *
  * @package kobo19
  */
@@ -19,54 +20,29 @@ function kobo19_customize_register( $wp_customize ) {
 	$wp_customize->get_setting( 'blogdescription' )->transport = 'postMessage';
 
 	$wp_customize->add_section(
-		'kobo19_app',
+		'kobo19_site',
 		array(
-			'title'       => 'アプリの情報',
+			'title'       => 'サイトの設定',
 			'priority'    => 30,
-			'description' => 'トップページに出るアプリの名前・説明・配布先を編集します。',
+			'description' => 'アプリが2本以上になったときのトップの見出しと、連絡先を設定します。アプリ個別の情報は「アプリ」の編集画面で入れます。',
 		)
 	);
 
 	$fields = array(
-		'kobo19_app_name'      => array(
-			'label'   => 'アプリの名前',
-			'default' => 'SujiCalc',
+		'kobo19_home_eyebrow'  => array(
+			'label'   => 'トップの小見出し',
+			'default' => 'つくったもの',
 			'type'    => 'text',
 		),
-		'kobo19_app_tagline'   => array(
-			'label'   => '一行の説明',
-			'default' => '打つと右に答えが出る、ノート型の電卓。',
+		'kobo19_home_title'    => array(
+			'label'   => 'トップの見出し',
+			'default' => 'アプリ',
 			'type'    => 'text',
 		),
-		'kobo19_app_lead'      => array(
+		'kobo19_home_lead'     => array(
 			'label'   => 'トップの説明文',
-			'default' => "式を打つと、その行の右側にすぐ答えが出ます。「＝」は要りません。\n書いた式はそのまま残るので、あとから数字を直せば、続きの計算も一度に合い直ります。",
+			'default' => 'つくったアプリを置いています。使い方の説明書と、サポートの窓口はそれぞれのページにあります。',
 			'type'    => 'textarea',
-		),
-		'kobo19_appstore_url'  => array(
-			'label'   => 'App Store の URL',
-			'default' => '',
-			'type'    => 'url',
-		),
-		'kobo19_app_price'     => array(
-			'label'   => '価格の表示',
-			'default' => '',
-			'type'    => 'text',
-		),
-		'kobo19_app_version'   => array(
-			'label'   => 'バージョン',
-			'default' => '1.0',
-			'type'    => 'text',
-		),
-		'kobo19_app_requires'  => array(
-			'label'   => '対応する OS',
-			'default' => 'iOS 17 / iPadOS 17 / macOS 14 以降',
-			'type'    => 'text',
-		),
-		'kobo19_app_size'      => array(
-			'label'   => 'カテゴリ',
-			'default' => '仕事効率化',
-			'type'    => 'text',
 		),
 		'kobo19_contact_email' => array(
 			'label'   => '連絡先メールアドレス',
@@ -85,7 +61,7 @@ function kobo19_customize_register( $wp_customize ) {
 			$id,
 			array(
 				'default'           => $field['default'],
-				'sanitize_callback' => 'url' === $field['type'] ? 'esc_url_raw' : ( 'textarea' === $field['type'] ? 'wp_kses_post' : 'sanitize_text_field' ),
+				'sanitize_callback' => 'textarea' === $field['type'] ? 'wp_kses_post' : 'sanitize_text_field',
 				'transport'         => 'refresh',
 			)
 		);
@@ -94,8 +70,8 @@ function kobo19_customize_register( $wp_customize ) {
 			$id,
 			array(
 				'label'   => $field['label'],
-				'section' => 'kobo19_app',
-				'type'    => 'url' === $field['type'] ? 'url' : $field['type'],
+				'section' => 'kobo19_site',
+				'type'    => $field['type'],
 			)
 		);
 	}

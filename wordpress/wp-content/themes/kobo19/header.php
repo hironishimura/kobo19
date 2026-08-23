@@ -55,28 +55,9 @@ defined( 'ABSPATH' ) || exit;
 						)
 					);
 				} else {
-					// メニューが未設定のときの初期表示。
-					$fallback = array();
-
-					$manual = get_post_type_archive_link( 'manual' );
-					if ( $manual ) {
-						$fallback[] = array( 'url' => $manual, 'label' => '使い方' );
-					}
-
-					foreach ( array( 'support' => 'サポート', 'privacy' => 'プライバシー' ) as $slug => $label ) {
-						$page = kobo19_page_link( $slug );
-						if ( $page ) {
-							$fallback[] = array( 'url' => $page['url'], 'label' => $label );
-						}
-					}
-
-					$store = kobo19_option( 'kobo19_appstore_url' );
-					if ( $store ) {
-						$fallback[] = array( 'url' => $store, 'label' => 'App Store' );
-					}
-
+					// メニューが未設定のときの初期表示。アプリの数で中身が変わります。
 					echo '<ul>';
-					foreach ( $fallback as $item ) {
+					foreach ( kobo19_primary_links() as $item ) {
 						printf(
 							'<li><a href="%s">%s</a></li>',
 							esc_url( $item['url'] ),

@@ -16,7 +16,7 @@ while ( have_posts() ) :
 <article class="entry">
 	<div class="wrap">
 		<header>
-			<p class="eyebrow"><?php echo esc_html( kobo19_option( 'kobo19_app_name', 'SujiCalc' ) ); ?></p>
+			<p class="eyebrow"><?php bloginfo( 'name' ); ?></p>
 			<h1 class="entry__title"><?php the_title(); ?></h1>
 		</header>
 

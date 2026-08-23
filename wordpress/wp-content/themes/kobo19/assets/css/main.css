@@ -698,37 +698,209 @@ td code {
 }
 
 /* --------------------------------------------------------------------------
-   10. できること
+   10. アプリの一覧と製品ページ
    -------------------------------------------------------------------------- */
 
-.features {
+
+/* 状態の印（準備中・公開中など） */
+.badge {
+	display: inline-block;
+	font-family: var(--font-mono);
+	font-size: 0.64rem;
+	font-weight: 500;
+	letter-spacing: 0.1em;
+	border: 1px solid var(--rule);
+	color: var(--ink-soft);
+	padding: 0.2em 0.6em;
+	margin-left: 0.5em;
+	vertical-align: middle;
+	white-space: nowrap;
+}
+
+/* アプリが2本以上あるときの一覧 */
+.app-grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-	gap: clamp(28px, 4vw, 52px);
+	gap: clamp(18px, 2.4vw, 26px);
 	margin-top: clamp(28px, 4vw, 44px);
 }
 
-.feature {
-	border-top: 1px solid var(--graphite);
-	padding-top: 1.2rem;
+.app-card {
+	display: flex;
+	gap: clamp(20px, 3vw, 32px);
+	align-items: flex-start;
+	border: 1px solid var(--graphite);
+	background: var(--paper-raised);
+	padding: clamp(20px, 3vw, 32px);
+	transition: transform var(--speed) var(--ease), box-shadow var(--speed) var(--ease);
 }
 
-.feature__title {
-	font-size: 1.1rem;
-	font-weight: 700;
+.app-card:hover {
+	transform: translateY(-2px);
+	box-shadow: 5px 5px 0 var(--rule-soft);
+}
+
+.app-card__icon {
+	flex: 0 0 auto;
+}
+
+.app-card__icon img {
+	width: 88px;
+	height: 88px;
+	border: 1px solid var(--rule);
+}
+
+.app-card__body {
+	flex: 1;
+	min-width: 0;
+}
+
+.app-card__title {
+	font-size: 1.22rem;
+	font-weight: 900;
 	letter-spacing: 0.01em;
 }
 
-.feature__text {
-	margin: 0.85em 0 0;
-	font-size: 0.92rem;
+.app-card__title a {
+	text-decoration: none;
+}
+
+.app-card__tagline {
+	margin: 0.5em 0 0;
+	font-family: var(--font-display);
+	font-weight: 700;
+	font-size: 0.98rem;
+	color: var(--graphite);
+}
+
+.app-card__text {
+	margin: 0.7em 0 0;
+	font-size: 0.9rem;
 	line-height: 1.95;
 }
 
-.feature .calc {
-	margin-top: 1.3em;
-	margin-bottom: 0;
-	font-size: 0.76rem;
+.app-card__facts {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4em;
+	margin: 1.1em 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.app-card__facts li {
+	font-family: var(--font-mono);
+	font-size: 0.68rem;
+	color: var(--ink-soft);
+	border: 1px solid var(--rule-soft);
+	padding: 0.25em 0.6em;
+}
+
+.app-card__links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1.3rem;
+	margin: 1.2em 0 0;
+	font-size: 0.86rem;
+}
+
+.app-card__links a {
+	text-decoration: none;
+	font-weight: 500;
+}
+
+/* 製品ページの本文（できること） */
+.app-body {
+	max-width: 44em;
+}
+
+.app-body h2 {
+	font-size: clamp(1.2rem, 2.5vw, 1.55rem);
+	font-weight: 900;
+	margin-top: 2.8em;
+	margin-bottom: 0.7em;
+	padding-bottom: 0.5em;
+	border-bottom: 1px solid var(--graphite);
+}
+
+.app-body > h2:first-child {
+	margin-top: 0;
+}
+
+.app-body p {
+	font-size: 0.98rem;
+	line-height: 2.05;
+}
+
+/* サポート・プライバシー・利用規約への入口 */
+.policy-list {
+	list-style: none;
+	margin: clamp(20px, 3vw, 30px) 0 0;
+	padding: 0;
+	border-top: 1px solid var(--graphite);
+}
+
+.policy-list li {
+	border-bottom: 1px solid var(--rule);
+}
+
+.policy-list a {
+	display: block;
+	padding: 1.05rem 0.4rem;
+	text-decoration: none;
+	transition: background var(--speed) var(--ease), padding-left var(--speed) var(--ease);
+}
+
+.policy-list a:hover {
+	background: var(--paper-raised);
+	padding-left: 1rem;
+}
+
+.policy-list__title {
+	display: block;
+	font-family: var(--font-display);
+	font-weight: 700;
+	font-size: 0.98rem;
+	color: var(--graphite);
+}
+
+.policy-list__text {
+	display: block;
+	margin-top: 0.35em;
+	font-size: 0.86rem;
+	color: var(--ink);
+	line-height: 1.85;
+}
+
+/* 資料の一覧を、アプリごとに区切る */
+.doc-group {
+	margin-top: clamp(28px, 4vw, 44px);
+}
+
+.doc-group + .doc-group {
+	margin-top: clamp(48px, 7vw, 84px);
+}
+
+.doc-group__title {
+	font-size: clamp(1.3rem, 2.6vw, 1.7rem);
+	font-weight: 900;
+	letter-spacing: 0.02em;
+	padding-bottom: 0.6rem;
+	border-bottom: 1px solid var(--graphite);
+}
+
+.doc-group__title a {
+	text-decoration: none;
+}
+
+.doc-group .policy-list {
+	margin-top: clamp(18px, 2.4vw, 26px);
+	border-top: 0;
+}
+
+/* デモや目次が無いときは1段組みに */
+.hero__grid--single,
+.manual__grid--plain {
+	grid-template-columns: minmax(0, 1fr);
 }
 
 .privacy-note {
@@ -1327,8 +1499,8 @@ td code {
 		font-size: 1rem;
 	}
 
-	.features {
-		grid-template-columns: 1fr;
+	.app-card {
+		flex-direction: column;
 	}
 
 	.chapter-nav {

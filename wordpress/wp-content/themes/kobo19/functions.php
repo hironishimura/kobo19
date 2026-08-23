@@ -10,6 +10,7 @@ defined( 'ABSPATH' ) || exit;
 define( 'KOBO19_VERSION', '1.0.0' );
 
 require_once get_template_directory() . '/inc/cpt.php';
+require_once get_template_directory() . '/inc/meta-box.php';
 require_once get_template_directory() . '/inc/shortcodes.php';
 require_once get_template_directory() . '/inc/template-tags.php';
 require_once get_template_directory() . '/inc/customizer.php';
@@ -45,6 +46,7 @@ function kobo19_setup() {
 
 	add_editor_style( 'assets/css/editor.css' );
 
+	add_image_size( 'kobo19-icon', 240, 240, true );
 	add_image_size( 'kobo19-shot', 900, 1800, false );
 
 	register_nav_menus( array(
@@ -135,8 +137,12 @@ add_filter( 'wp_resource_hints', 'kobo19_resource_hints', 10, 2 );
  * @return string[]
  */
 function kobo19_body_classes( $classes ) {
-	if ( is_singular( 'manual' ) || is_post_type_archive( 'manual' ) ) {
-		$classes[] = 'is-manual';
+	if ( is_singular( 'doc' ) ) {
+		$classes[] = 'is-doc is-doc-' . kobo19_doc_kind();
+	}
+
+	if ( is_singular( 'app' ) || is_post_type_archive( 'app' ) ) {
+		$classes[] = 'is-app';
 	}
 
 	return $classes;
@@ -184,7 +190,7 @@ function kobo19_setup_front_page() {
 
 	if ( ! $home ) {
 		$home_id = wp_insert_post( array(
-			'post_title'   => kobo19_option( 'kobo19_app_name', 'SujiCalc' ),
+			'post_title'   => get_bloginfo( 'name' ),
 			'post_name'    => 'home',
 			'post_status'  => 'publish',
 			'post_type'    => 'page',

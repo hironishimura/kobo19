@@ -8,20 +8,102 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * 説明書の章を、順序どおりに並べて返す。
+ * 公開中のアプリを、並び順に返す。
  *
  * @return WP_Post[]
  */
-function kobo19_manual_chapters() {
-	static $chapters = null;
+function kobo19_apps() {
+	static $apps = null;
 
-	if ( null !== $chapters ) {
-		return $chapters;
+	if ( null === $apps ) {
+		$apps = get_posts(
+			array(
+				'post_type'      => 'app',
+				'post_status'    => 'publish',
+				'posts_per_page' => -1,
+				'orderby'        => array(
+					'menu_order' => 'ASC',
+					'date'       => 'ASC',
+				),
+				'order'          => 'ASC',
+			)
+		);
 	}
 
-	$chapters = get_posts(
+	return $apps;
+}
+
+/**
+ * アプリの入力値を返す。
+ *
+ * @param string   $key    フィールドキー（tagline / store / version など）。
+ * @param int|null $app_id アプリのID。
+ * @return string
+ */
+function kobo19_app_meta( $key, $app_id = null ) {
+	$app_id = $app_id ? $app_id : get_the_ID();
+
+	return (string) get_post_meta( $app_id, '_kobo19_' . $key, true );
+}
+
+/**
+ * 資料が属するアプリのIDを返す。
+ *
+ * @param int|null $post_id 資料のID。
+ * @return int 紐づいていなければ 0。
+ */
+function kobo19_doc_app( $post_id = null ) {
+	$post_id = $post_id ? $post_id : get_the_ID();
+
+	return (int) get_post_meta( $post_id, '_kobo19_app', true );
+}
+
+/**
+ * 資料の種別を返す。
+ *
+ * @param int|null $post_id 資料のID。
+ * @return string
+ */
+function kobo19_doc_kind( $post_id = null ) {
+	$post_id = $post_id ? $post_id : get_the_ID();
+	$kind    = (string) get_post_meta( $post_id, '_kobo19_kind', true );
+
+	return $kind ? $kind : 'chapter';
+}
+
+/**
+ * あるアプリの資料を、種別で絞って返す。
+ *
+ * @param int         $app_id アプリのID。
+ * @param string|null $kind   種別。null ならすべて。
+ * @return WP_Post[]
+ */
+function kobo19_app_docs( $app_id, $kind = null ) {
+	static $cache = array();
+
+	$key = $app_id . '|' . (string) $kind;
+
+	if ( isset( $cache[ $key ] ) ) {
+		return $cache[ $key ];
+	}
+
+	$meta = array(
 		array(
-			'post_type'      => 'manual',
+			'key'   => '_kobo19_app',
+			'value' => (int) $app_id,
+		),
+	);
+
+	if ( $kind ) {
+		$meta[] = array(
+			'key'   => '_kobo19_kind',
+			'value' => $kind,
+		);
+	}
+
+	$cache[ $key ] = get_posts(
+		array(
+			'post_type'      => 'doc',
 			'post_status'    => 'publish',
 			'posts_per_page' => -1,
 			'orderby'        => array(
@@ -29,22 +111,37 @@ function kobo19_manual_chapters() {
 				'date'       => 'ASC',
 			),
 			'order'          => 'ASC',
+			'meta_query'     => $meta,
 		)
 	);
 
-	return $chapters;
+	return $cache[ $key ];
 }
 
 /**
- * 章の通し番号を返す。並びの何番目かで決まります。
+ * あるアプリの説明書の章を返す。
  *
- * @param int|null $post_id 投稿ID。
- * @return int 見つからなければ 0。
+ * @param int $app_id アプリのID。
+ * @return WP_Post[]
+ */
+function kobo19_app_chapters( $app_id ) {
+	return kobo19_app_docs( $app_id, 'chapter' );
+}
+
+/**
+ * 章の通し番号を返す。同じアプリの章の中で何番目か。
+ *
+ * @param int|null $post_id 資料のID。
+ * @return int 章でなければ 0。
  */
 function kobo19_chapter_number( $post_id = null ) {
 	$post_id = $post_id ? $post_id : get_the_ID();
 
-	foreach ( kobo19_manual_chapters() as $index => $chapter ) {
+	if ( 'chapter' !== kobo19_doc_kind( $post_id ) ) {
+		return 0;
+	}
+
+	foreach ( kobo19_app_chapters( kobo19_doc_app( $post_id ) ) as $index => $chapter ) {
 		if ( (int) $chapter->ID === (int) $post_id ) {
 			return $index + 1;
 		}
@@ -54,26 +151,26 @@ function kobo19_chapter_number( $post_id = null ) {
 }
 
 /**
- * 章番号を「01」の形にして返す。
+ * 章番号を「01」の形で返す。
  *
- * @param int|null $post_id 投稿ID。
+ * @param int|null $post_id 資料のID。
  * @return string
  */
 function kobo19_chapter_label( $post_id = null ) {
 	$number = kobo19_chapter_number( $post_id );
 
-	return $number ? sprintf( '%02d', $number ) : '—';
+	return $number ? sprintf( '%02d', $number ) : '';
 }
 
 /**
- * いま見ている章の前後を返す。
+ * 前後の章を返す。
  *
- * @param int|null $post_id 投稿ID。
+ * @param int|null $post_id 資料のID。
  * @return array{prev: ?WP_Post, next: ?WP_Post}
  */
 function kobo19_chapter_siblings( $post_id = null ) {
 	$post_id  = $post_id ? $post_id : get_the_ID();
-	$chapters = kobo19_manual_chapters();
+	$chapters = kobo19_app_chapters( kobo19_doc_app( $post_id ) );
 	$index    = kobo19_chapter_number( $post_id ) - 1;
 
 	return array(
@@ -83,20 +180,23 @@ function kobo19_chapter_siblings( $post_id = null ) {
 }
 
 /**
- * 説明書の目次を出力する。章のページでは、いま見ている章に印を付けます。
+ * 説明書の目次を出力する。
  *
+ * @param int      $app_id     アプリのID。
  * @param int|null $current_id いま見ている章のID。
  */
-function kobo19_manual_toc( $current_id = null ) {
-	$chapters = kobo19_manual_chapters();
+function kobo19_manual_toc( $app_id, $current_id = null ) {
+	$chapters = kobo19_app_chapters( $app_id );
 
 	if ( ! $chapters ) {
 		return;
 	}
 
-	echo '<nav class="toc" aria-label="説明書の目次">';
-	echo '<p class="toc__title">説明書</p>';
-	echo '<ol class="toc__list">';
+	printf(
+		'<nav class="toc" aria-label="説明書の目次"><p class="toc__title"><a href="%s">%s の説明書</a></p><ol class="toc__list">',
+		esc_url( get_permalink( $app_id ) ),
+		esc_html( get_the_title( $app_id ) )
+	);
 
 	foreach ( $chapters as $index => $chapter ) {
 		$is_current = ( (int) $chapter->ID === (int) $current_id );
@@ -111,8 +211,27 @@ function kobo19_manual_toc( $current_id = null ) {
 		);
 	}
 
-	echo '</ol>';
-	echo '</nav>';
+	echo '</ol></nav>';
+}
+
+/**
+ * アプリの「App Store に出すページ」（サポート・プライバシー・利用規約）を返す。
+ *
+ * @param int $app_id アプリのID。
+ * @return array<string, WP_Post> 種別をキーにした配列。
+ */
+function kobo19_app_policies( $app_id ) {
+	$found = array();
+
+	foreach ( array( 'support', 'privacy', 'terms' ) as $kind ) {
+		$docs = kobo19_app_docs( $app_id, $kind );
+
+		if ( $docs ) {
+			$found[ $kind ] = $docs[0];
+		}
+	}
+
+	return $found;
 }
 
 /**
@@ -138,20 +257,112 @@ function kobo19_summary( $length = 90 ) {
 }
 
 /**
- * 固定ページを、あれば URL つきで返す。
+ * アプリの facts（バージョン・対応 OS など）を、空でないものだけ返す。
  *
- * @param string $slug スラッグ。
- * @return array{url: string, title: string}|null
+ * @param int $app_id アプリのID。
+ * @return array<string, string>
  */
-function kobo19_page_link( $slug ) {
-	$page = get_page_by_path( $slug );
+function kobo19_app_facts( $app_id ) {
+	return array_filter(
+		array(
+			'バージョン' => kobo19_app_meta( 'version', $app_id ),
+			'対応'       => kobo19_app_meta( 'requires', $app_id ),
+			'カテゴリ'   => kobo19_app_meta( 'category', $app_id ),
+			'価格'       => kobo19_app_meta( 'price', $app_id ),
+		)
+	);
+}
 
-	if ( ! $page ) {
-		return null;
+/**
+ * ヘッダー・フッターに並べるリンクを組み立てる。
+ *
+ * アプリが1本のうちは、そのアプリの説明書やサポートへ直接つなぎます。
+ * 2本以上になったら、一覧へのリンクに切り替わります。
+ *
+ * @return array<int, array{url: string, label: string}>
+ */
+function kobo19_primary_links() {
+	$apps  = kobo19_apps();
+	$links = array();
+
+	if ( 1 === count( $apps ) ) {
+		$app      = $apps[0];
+		$chapters = kobo19_app_chapters( $app->ID );
+		$policies = kobo19_app_policies( $app->ID );
+
+		if ( $chapters ) {
+			$links[] = array(
+				'url'   => get_permalink( $chapters[0] ),
+				'label' => '使い方',
+			);
+		}
+
+		foreach ( array( 'support' => 'サポート', 'privacy' => 'プライバシー' ) as $kind => $label ) {
+			if ( isset( $policies[ $kind ] ) ) {
+				$links[] = array(
+					'url'   => get_permalink( $policies[ $kind ] ),
+					'label' => $label,
+				);
+			}
+		}
+
+		$store = kobo19_app_meta( 'store', $app->ID );
+		if ( $store ) {
+			$links[] = array(
+				'url'   => $store,
+				'label' => 'App Store',
+			);
+		}
+
+		return $links;
 	}
 
-	return array(
-		'url'   => get_permalink( $page ),
-		'title' => get_the_title( $page ),
-	);
+	$apps_url = get_post_type_archive_link( 'app' );
+	if ( $apps_url && $apps ) {
+		$links[] = array(
+			'url'   => $apps_url,
+			'label' => 'アプリ',
+		);
+	}
+
+	$docs_url = get_post_type_archive_link( 'doc' );
+	if ( $docs_url ) {
+		$links[] = array(
+			'url'   => $docs_url,
+			'label' => '説明書とサポート',
+		);
+	}
+
+	return $links;
+}
+
+/**
+ * フッターの「お困りのときは」から飛ばす先を返す。
+ *
+ * @return array{url: string, label: string}|null
+ */
+function kobo19_support_link() {
+	$apps = kobo19_apps();
+
+	if ( 1 === count( $apps ) ) {
+		$policies = kobo19_app_policies( $apps[0]->ID );
+
+		if ( isset( $policies['support'] ) ) {
+			return array(
+				'url'   => get_permalink( $policies['support'] ),
+				'label' => 'サポートを見る',
+			);
+		}
+	}
+
+	$docs_url = get_post_type_archive_link( 'doc' );
+
+	if ( $docs_url && $apps ) {
+		return array(
+			'url'   => $docs_url,
+			'label' => '説明書とサポート',
+		);
+	}
+
+	return null;
 }

@@ -49,6 +49,7 @@ function do_shortcode( $text ) {
 }
 
 require_once get_template_directory() . '/inc/shortcodes.php';
+require_once get_template_directory() . '/inc/starter-app.php';
 require_once get_template_directory() . '/inc/starter-manual.php';
 require_once get_template_directory() . '/inc/starter-pages.php';
 
@@ -150,13 +151,31 @@ function kobo19_inline( $text ) {
 
 // ---------------------------------------------------------------- 共通の枠
 
+$app      = kobo19_app_source();
 $chapters = kobo19_manual_source();
 $pages    = kobo19_page_source();
 
-$APP   = 'SujiCalc';
+$APP   = $app['title'];
 $EMAIL = 'tapes-penne05@icloud.com';
+$SITE  = '19工房';
+
+/** アプリの数で中身が変わるメニュー。ここでは1本なので、その資料へ直接つなぐ。 */
+function kobo19_menu() {
+	return array(
+		array( 'url' => 'manual-getting-started.html', 'label' => '使い方' ),
+		array( 'url' => 'support.html', 'label' => 'サポート' ),
+		array( 'url' => 'privacy.html', 'label' => 'プライバシー' ),
+	);
+}
 
 function kobo19_head( $title ) {
+	global $SITE;
+
+	$nav = '';
+	foreach ( kobo19_menu() as $item ) {
+		$nav .= sprintf( '<li><a href="%s">%s</a></li>', $item['url'], esc_html( $item['label'] ) );
+	}
+
 	return '<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -178,18 +197,14 @@ function kobo19_head( $title ) {
 		<div class="wrap site-header__inner">
 			<a class="brand" href="index.html" rel="home">
 				<span class="brand__mark">19</span>
-				<span class="brand__name">19工房</span>
-				<span class="brand__tagline">つくったものを置いておく場所</span>
+				<span class="brand__name">' . $SITE . '</span>
+				<span class="brand__tagline">つくったアプリを置いておく場所</span>
 			</a>
 
 			<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">メニュー</button>
 
 			<nav class="nav" id="site-nav" aria-label="メインメニュー">
-				<ul>
-					<li><a href="manual.html">使い方</a></li>
-					<li><a href="support.html">サポート</a></li>
-					<li><a href="privacy.html">プライバシー</a></li>
-				</ul>
+				<ul>' . $nav . '</ul>
 			</nav>
 		</div>
 	</header>
@@ -199,7 +214,7 @@ function kobo19_head( $title ) {
 }
 
 function kobo19_foot() {
-	global $EMAIL;
+	global $EMAIL, $SITE;
 
 	return '	</main>
 
@@ -207,7 +222,7 @@ function kobo19_foot() {
 		<div class="wrap contact__inner">
 			<div>
 				<h2 class="contact__title">お困りのときは</h2>
-				<p class="contact__text">使い方のご質問、不具合のご報告、ご要望をお待ちしています。お使いの端末と OS のバージョン、再現する式を添えていただけると助かります。</p>
+				<p class="contact__text">使い方のご質問、不具合のご報告、ご要望をお待ちしています。お使いの端末と OS のバージョン、再現する式や手順を添えていただけると助かります。</p>
 			</div>
 			<div><a class="btn" href="support.html">サポートを見る</a></div>
 		</div>
@@ -219,13 +234,13 @@ function kobo19_foot() {
 				<div>
 					<a class="brand" href="index.html" rel="home">
 						<span class="brand__mark">19</span>
-						<span class="brand__name">19工房</span>
+						<span class="brand__name">' . $SITE . '</span>
 					</a>
 					<p class="site-footer__mail"><a href="mailto:' . $EMAIL . '">' . $EMAIL . '</a></p>
 				</div>
 				<nav aria-label="フッターメニュー">
 					<ul>
-						<li><a href="manual.html">使い方</a></li>
+						<li><a href="manual-getting-started.html">使い方</a></li>
 						<li><a href="support.html">サポート</a></li>
 						<li><a href="privacy.html">プライバシーポリシー</a></li>
 						<li><a href="terms.html">利用規約</a></li>
@@ -233,8 +248,8 @@ function kobo19_foot() {
 				</nav>
 			</div>
 			<div class="colophon">
-				<span>&copy; 2026 19工房</span>
-				<span>このアプリは利用者の情報を収集しません</span>
+				<span>&copy; 2026 ' . $SITE . '</span>
+				<span>ここに置いているアプリは、利用者の情報を収集しません</span>
 			</div>
 		</div>
 	</footer>
@@ -247,12 +262,67 @@ function kobo19_foot() {
 ';
 }
 
+/** アプリの見出し（トップと製品ページで共通）。 */
+function kobo19_app_hero( $app ) {
+	$facts = array_filter( array(
+		'バージョン' => $app['meta']['version'],
+		'対応'       => $app['meta']['requires'],
+		'カテゴリ'   => $app['meta']['category'],
+		'価格'       => $app['meta']['price'],
+	) );
+
+	$facts_html = '';
+	if ( $facts ) {
+		$facts_html = '<dl class="facts">';
+		foreach ( $facts as $k => $v ) {
+			$facts_html .= '<div class="facts__row"><dt>' . esc_html( $k ) . '</dt><dd>' . esc_html( $v ) . '</dd></div>';
+		}
+		$facts_html .= '</dl>';
+	}
+
+	$badge   = $app['meta']['status'] ? '<span class="badge">' . esc_html( $app['meta']['status'] ) . '</span>' : '';
+	$store   = $app['meta']['store'];
+	$buttons = '';
+
+	if ( $store ) {
+		$buttons .= '<a class="btn" href="' . esc_url( $store ) . '">App Store で見る</a>';
+	}
+	$buttons .= '<a class="btn' . ( $store ? ' btn--quiet' : '' ) . '" href="manual-getting-started.html">使い方を読む</a>';
+
+	$demo = $app['meta']['demo'] ? '<div class="hero__demo">' . do_shortcode( $app['meta']['demo'] ) . '</div>' : '';
+
+	return '
+	<section class="hero">
+		<div class="wrap">
+			<div class="hero__grid' . ( $demo ? '' : ' hero__grid--single' ) . '">
+				<div class="hero__text">
+					<p class="hero__eyebrow">' . esc_html( $app['meta']['category'] ) . $badge . '</p>
+
+					<h1 class="hero__title">' . esc_html( $app['title'] ) . '</h1>
+
+					<p class="hero__tagline">' . esc_html( $app['meta']['tagline'] ) . '</p>
+
+					<p class="hero__lead">' . nl2br( esc_html( $app['meta']['lead'] ) ) . '</p>
+
+					<div class="hero__actions">' . $buttons . '</div>
+
+					' . $facts_html . '
+				</div>
+
+				' . $demo . '
+			</div>
+		</div>
+	</section>
+';
+}
+
 /** 説明書の目次（章のページの左に出るもの）。 */
-function kobo19_toc( $chapters, $current = null ) {
-	$html = '<nav class="toc" aria-label="説明書の目次"><p class="toc__title">説明書</p><ol class="toc__list">';
+function kobo19_toc( $chapters, $app, $current = null ) {
+	$html = '<nav class="toc" aria-label="説明書の目次"><p class="toc__title">'
+		. '<a href="app-' . $app['slug'] . '.html">' . esc_html( $app['title'] ) . ' の説明書</a></p><ol class="toc__list">';
 
 	foreach ( $chapters as $i => $c ) {
-		$is  = ( $c['slug'] === $current );
+		$is    = ( $c['slug'] === $current );
 		$html .= sprintf(
 			'<li class="toc__item%s"><a href="manual-%s.html"%s><span class="toc__no">%02d</span>%s</a></li>',
 			$is ? ' is-current' : '',
@@ -266,7 +336,7 @@ function kobo19_toc( $chapters, $current = null ) {
 	return $html . '</ol></nav>';
 }
 
-/** 目次の一覧（トップと目次ページで使う縦並び）。 */
+/** 章の一覧（縦並び）。 */
 function kobo19_chapter_list( $chapters ) {
 	$html = '<ol class="chapter-list">';
 
@@ -285,145 +355,159 @@ function kobo19_chapter_list( $chapters ) {
 	return $html . '</ol>';
 }
 
-// ---------------------------------------------------------------- 書き出し
+/** サポート・プライバシー・利用規約への入口。 */
+function kobo19_policy_list( $pages ) {
+	$html = '<ul class="policy-list">';
 
-$out = __DIR__ . '/preview';
-
-// --- トップ ---
-$features = array(
-	array(
-		'title' => '単位がそのまま通る',
-		'text'  => '数字のうしろに単位を書くだけです。掛け算・割り算をすると <code>mm²</code> や <code>N/mm²</code> のように組み立てられ、種類の違う単位を足そうとするとエラーで止まります。',
-		'calc'  => "120 mm * 300 mm | 36,000 mm²\n36 kN / 36000 mm2 | 1 N/mm²\n10 km in mile | 6.2137119224 mile",
-	),
-	array(
-		'title' => '名前を付けて使い回す',
-		'text'  => '値に名前を付けると、ほかの行から呼び出せます。名前を変えれば、その名前を使っている行もまとめて書き換わります。前の行は <code>prev</code>、3行目は <code>#3</code>、空行までの合計は <code>sum</code> です。',
-		'calc'  => "梁幅 = 120 mm | 120 mm\n梁せい = 300 mm | 300 mm\n梁幅 * 梁せい | 36,000 mm²",
-	),
-	array(
-		'title' => '表にしてまとめて集計',
-		'text'  => '値を並べて持てます。<code>sum</code> <code>avg</code> <code>min</code> <code>max</code> <code>sort</code> で扱え、文字も混ぜられるので、計算書の見出しを付けられます。',
-		'calc'  => "価格 = [4800, 12000, 3200] | [4,800, 12,000, 3,200]\nsum(価格) | 20,000\navg(価格) | 6,666.6666666667",
-	),
-	array(
-		'title' => 'グラフになる',
-		'text'  => '<code>plot</code> と書けば曲線が、<code>chart</code> と書けば棒グラフが本文の下に出ます。打ち直すたびにその場で描き直されます。',
-		'calc'  => "plot(x^2 - 3x) |\nchart(家賃, 光熱費, 食費) |",
-	),
-	array(
-		'title' => 'かんたんなプログラム',
-		'text'  => '<code>if</code> <code>for</code> <code>while</code> <code>def</code> が Python と同じ書き方で使えます。繰り返しの計算や、自分用の関数を作れます。作った関数はほかのシートからも呼べます。',
-		'calc'  => "def 税込(x): |\n    return x * 1.1 |\n税込(4800) | 5,280",
-	),
-	array(
-		'title' => '3つの端末で同じ書類',
-		'text'  => 'iPhone・iPad・Mac の書類は iCloud で自動的に同期します。現場の iPhone に打ち込んだ数字を、事務所の Mac でそのまま続けられます。別々のシートを編集していれば、どちらも残ります。',
-		'calc'  => '',
-	),
-);
-
-$feature_html = '';
-foreach ( $features as $f ) {
-	$feature_html .= '<div class="feature reveal"><h2 class="feature__title">' . esc_html( $f['title'] ) . '</h2>'
-		. '<p class="feature__text">' . $f['text'] . '</p>';
-	if ( $f['calc'] ) {
-		$feature_html .= do_shortcode( "[calc numbers=\"no\"]\n" . $f['calc'] . "\n[/calc]" );
+	foreach ( $pages as $slug => $page ) {
+		$html .= sprintf(
+			'<li><a href="%s.html"><span class="policy-list__title">%s</span><span class="policy-list__text">%s</span></a></li>',
+			$slug,
+			esc_html( $page['title'] ),
+			esc_html( isset( $page['excerpt'] ) ? $page['excerpt'] : '' )
+		);
 	}
-	$feature_html .= '</div>';
+
+	return $html . '</ul>';
 }
 
-$facts = array(
-	'バージョン' => '1.0',
-	'対応'       => 'iOS 17 / iPadOS 17 / macOS 14 以降',
-	'カテゴリ'   => '仕事効率化',
-);
-
-$facts_html = '<dl class="facts">';
-foreach ( $facts as $k => $v ) {
-	$facts_html .= '<div class="facts__row"><dt>' . esc_html( $k ) . '</dt><dd>' . esc_html( $v ) . '</dd></div>';
-}
-$facts_html .= '</dl>';
-
-$home = kobo19_head( $APP ) . '
-	<section class="hero">
-		<div class="wrap">
-			<div class="hero__grid">
-				<div class="hero__text">
-					<p class="hero__eyebrow">iPhone ／ iPad ／ Mac</p>
-
-					<h1 class="hero__title">' . $APP . '</h1>
-
-					<p class="hero__tagline">打つと右に答えが出る、ノート型の電卓。</p>
-
-					<p class="hero__lead">式を打つと、その行の右側にすぐ答えが出ます。「＝」は要りません。<br>書いた式はそのまま残るので、あとから数字を直せば、続きの計算も一度に合い直ります。</p>
-
-					<div class="hero__actions">
-						<a class="btn" href="manual.html">使い方を読む</a>
-					</div>
-
-					' . $facts_html . '
-				</div>
-
-				<div class="hero__demo">
-' . do_shortcode( "[calc label=\"打つと、右に出る\"]\n// 8月分の見積もり |\n単価 = 1200円 | 1,200円\n個数 = 35 | 35\n単価 * 個数 | 42,000円\n+ 10% | 46,200円\n \n梁幅 = 120 mm | 120 mm\n梁せい = 300 mm | 300 mm\n梁幅 * 梁せい | 36,000 mm²\n[/calc]" ) . '
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<section class="section">
-		<div class="wrap">
-			<p class="eyebrow">できること</p>
-			<div class="features">' . $feature_html . '</div>
-		</div>
-	</section>
-
-	<section class="section">
-		<div class="wrap">
-			<div class="privacy-note">
-				<div>
-					<p class="eyebrow">プライバシー</p>
-					<h2 class="section-title">何も集めません</h2>
-					<p class="section-lead">広告も、利用状況の解析も入っていません。そもそも、外部と通信する機能がアプリに含まれていません。書いた内容は、お使いの端末とご自身の iCloud にだけ保存されます。</p>
-				</div>
-				<p class="section-more"><a class="btn btn--quiet" href="privacy.html">プライバシーポリシー</a></p>
-			</div>
-		</div>
-	</section>
-
+/** アプリの資料（説明書＋App Store 用のページ）。 */
+function kobo19_app_docs_section( $chapters, $pages ) {
+	return '
 	<section class="section">
 		<div class="wrap">
 			<p class="eyebrow">説明書</p>
 			<h2 class="section-title">使い方</h2>
-			<p class="section-lead">式の書き方から、単位・グラフ・プログラム・同期まで、例つきでまとめています。</p>
+			<p class="section-lead">上から順に読めば一通り分かるように並べています。</p>
 ' . kobo19_chapter_list( $chapters ) . '
 		</div>
 	</section>
-' . kobo19_foot();
 
-file_put_contents( "$out/index.html", $home );
+	<section class="section">
+		<div class="wrap">
+			<p class="eyebrow">このアプリについて</p>
+' . kobo19_policy_list( $pages ) . '
+		</div>
+	</section>
+';
+}
 
-// --- 説明書の目次 ---
-$toc_page = kobo19_head( "使い方｜$APP" ) . '
+/** アプリのカード（2本以上になったときの一覧）。 */
+function kobo19_app_card( $app, $chapters ) {
+	$facts = array_filter( array(
+		$app['meta']['version'] ? 'バージョン ' . $app['meta']['version'] : '',
+		$app['meta']['requires'],
+		$app['meta']['category'],
+	) );
+
+	$facts_html = '';
+	if ( $facts ) {
+		$facts_html = '<ul class="app-card__facts">';
+		foreach ( $facts as $f ) {
+			$facts_html .= '<li>' . esc_html( $f ) . '</li>';
+		}
+		$facts_html .= '</ul>';
+	}
+
+	$badge = $app['meta']['status'] ? '<span class="badge">' . esc_html( $app['meta']['status'] ) . '</span>' : '';
+	$store = $app['meta']['store'] ? '<a href="' . esc_url( $app['meta']['store'] ) . '">App Store</a>' : '';
+
+	return '<article class="app-card reveal">
+		<div class="app-card__body">
+			<h2 class="app-card__title"><a href="app-' . $app['slug'] . '.html">' . esc_html( $app['title'] ) . '</a>' . $badge . '</h2>
+			<p class="app-card__tagline">' . esc_html( $app['meta']['tagline'] ) . '</p>
+			<p class="app-card__text">' . esc_html( str_replace( "\n", ' ', $app['meta']['lead'] ) ) . '</p>
+			' . $facts_html . '
+			<p class="app-card__links">
+				<a href="app-' . $app['slug'] . '.html">くわしく見る →</a>
+				<a href="manual-getting-started.html">使い方（' . count( $chapters ) . '章）</a>
+				' . $store . '
+			</p>
+		</div>
+	</article>';
+}
+
+// ---------------------------------------------------------------- 書き出し
+
+$out  = __DIR__ . '/preview';
+$body = kobo19_render( $app['content'] );
+
+// --- トップ（アプリが1本なので、そのまま製品ページ）---
+file_put_contents(
+	"$out/index.html",
+	kobo19_head( $APP ) . kobo19_app_hero( $app )
+	. '
+	<section class="section">
+		<div class="wrap">
+			<div class="app-body">
+' . $body . '
+			</div>
+		</div>
+	</section>
+' . kobo19_app_docs_section( $chapters, $pages ) . kobo19_foot()
+);
+
+// --- 製品ページ ---
+file_put_contents(
+	"$out/app-{$app['slug']}.html",
+	kobo19_head( $app['title'] . "｜$SITE" ) . kobo19_app_hero( $app )
+	. '
+	<section class="section">
+		<div class="wrap">
+			<div class="app-body">
+' . $body . '
+			</div>
+		</div>
+	</section>
+' . kobo19_app_docs_section( $chapters, $pages ) . kobo19_foot()
+);
+
+// --- アプリ一覧（2本目が増えたときの見え方）---
+file_put_contents(
+	"$out/apps.html",
+	kobo19_head( "アプリ｜$SITE" ) . '
 	<section class="page-head">
 		<div class="wrap">
-			<p class="eyebrow">' . $APP . ' ／ 説明書</p>
-			<h1 class="page-head__title">使い方</h1>
-			<p class="page-head__lead">式の書き方から、単位・グラフ・プログラム・同期まで。上から順に読めば一通り分かるように並べています。</p>
+			<p class="eyebrow">つくったもの</p>
+			<h1 class="page-head__title">アプリ</h1>
+			<p class="page-head__lead">つくったアプリを置いています。使い方の説明書と、サポートの窓口はそれぞれのページにあります。</p>
 		</div>
 	</section>
 
 	<section class="section" style="padding-top:0;">
-		<div class="wrap">' . kobo19_chapter_list( $chapters ) . '</div>
+		<div class="wrap">
+			<div class="app-grid">' . kobo19_app_card( $app, $chapters ) . '</div>
+		</div>
 	</section>
-' . kobo19_foot();
+' . kobo19_foot()
+);
 
-file_put_contents( "$out/manual.html", $toc_page );
+// --- 資料一覧 ---
+file_put_contents(
+	"$out/docs.html",
+	kobo19_head( "説明書とサポート｜$SITE" ) . '
+	<section class="page-head">
+		<div class="wrap">
+			<p class="eyebrow">資料</p>
+			<h1 class="page-head__title">説明書とサポート</h1>
+			<p class="page-head__lead">アプリごとに、使い方の説明書と、サポート・プライバシー・利用規約をまとめています。</p>
+		</div>
+	</section>
 
-// --- 各章 ---
+	<section class="section" style="padding-top:0;">
+		<div class="wrap">
+			<div class="doc-group">
+				<h2 class="doc-group__title"><a href="app-' . $app['slug'] . '.html">' . esc_html( $app['title'] ) . '</a></h2>
+' . kobo19_chapter_list( $chapters ) . kobo19_policy_list( $pages ) . '
+			</div>
+		</div>
+	</section>
+' . kobo19_foot()
+);
+
+// --- 説明書の各章 ---
 foreach ( $chapters as $i => $c ) {
-	$prev = isset( $chapters[ $i - 1 ] ) && $i > 0 ? $chapters[ $i - 1 ] : null;
+	$prev = $i > 0 && isset( $chapters[ $i - 1 ] ) ? $chapters[ $i - 1 ] : null;
 	$next = isset( $chapters[ $i + 1 ] ) ? $chapters[ $i + 1 ] : null;
 
 	$nav = '<nav class="chapter-nav" aria-label="前後の章"><div class="chapter-nav__side">';
@@ -438,14 +522,16 @@ foreach ( $chapters as $i => $c ) {
 	}
 	$nav .= '</div></nav>';
 
-	$page = kobo19_head( $c['title'] . "｜$APP" ) . '
+	file_put_contents(
+		"$out/manual-{$c['slug']}.html",
+		kobo19_head( $c['title'] . "｜$APP" ) . '
 	<article class="manual">
 		<div class="wrap manual__grid">
-			<aside class="manual__side">' . kobo19_toc( $chapters, $c['slug'] ) . '</aside>
+			<aside class="manual__side">' . kobo19_toc( $chapters, $app, $c['slug'] ) . '</aside>
 
 			<div class="manual__main">
 				<header class="manual__head">
-					<p class="eyebrow"><a href="manual.html">説明書</a> ／ 第' . ( $i + 1 ) . '章</p>
+					<p class="eyebrow"><a href="app-' . $app['slug'] . '.html">' . esc_html( $app['title'] ) . '</a> ／ 第' . ( $i + 1 ) . '章</p>
 					<h1 class="manual__title"><span class="manual__no">' . sprintf( '%02d', $i + 1 ) . '</span>' . esc_html( $c['title'] ) . '</h1>
 					<p class="manual__summary">' . esc_html( $c['excerpt'] ) . '</p>
 				</header>
@@ -458,29 +544,40 @@ foreach ( $chapters as $i => $c ) {
 			</div>
 		</div>
 	</article>
-' . kobo19_foot();
-
-	file_put_contents( "$out/manual-{$c['slug']}.html", $page );
+' . kobo19_foot()
+	);
 }
 
-// --- 固定ページ ---
-foreach ( $pages as $slug => $p ) {
-	$page = kobo19_head( $p['title'] . "｜$APP" ) . '
-	<article class="entry">
-		<div class="wrap">
-			<header>
-				<p class="eyebrow">' . $APP . '</p>
-				<h1 class="entry__title">' . esc_html( $p['title'] ) . '</h1>
-			</header>
+// --- サポート・プライバシー・利用規約 ---
+foreach ( $pages as $slug => $page ) {
+	file_put_contents(
+		"$out/$slug.html",
+		kobo19_head( $page['title'] . "｜$APP" ) . '
+	<article class="manual">
+		<div class="wrap manual__grid manual__grid--plain">
+			<div class="manual__main">
+				<header class="manual__head">
+					<p class="eyebrow"><a href="app-' . $app['slug'] . '.html">' . esc_html( $app['title'] ) . '</a></p>
+					<h1 class="manual__title">' . esc_html( $page['title'] ) . '</h1>
+					<p class="manual__summary">' . esc_html( isset( $page['excerpt'] ) ? $page['excerpt'] : '' ) . '</p>
+				</header>
 
-			<div class="entry__body">
-' . kobo19_render( $p['content'] ) . '
+				<div class="entry__body">
+' . kobo19_render( $page['content'] ) . '
+				</div>
+
+				<nav class="chapter-nav" aria-label="アプリのページへ">
+					<div class="chapter-nav__side">
+						<a href="app-' . $app['slug'] . '.html"><span class="chapter-nav__label">戻る</span>'
+						. '<span class="chapter-nav__title">← ' . esc_html( $app['title'] ) . '</span></a>
+					</div>
+					<div class="chapter-nav__side chapter-nav__side--next"></div>
+				</nav>
 			</div>
 		</div>
 	</article>
-' . kobo19_foot();
-
-	file_put_contents( "$out/$slug.html", $page );
+' . kobo19_foot()
+	);
 }
 
-printf( "プレビューを書き出しました: %d ページ\n", 2 + count( $chapters ) + count( $pages ) );
+printf( "プレビューを書き出しました: %d ページ\n", 4 + count( $chapters ) + count( $pages ) );
