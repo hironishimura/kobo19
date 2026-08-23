@@ -4,7 +4,7 @@
 
    方眼のノートに式を書く、というアプリの姿をそのまま画面に持ち込んでいます。
    ・例は .calc（行番号・式・右端の答え）で、アプリの画面と同じ形で見せる
-   ・全体を細い外枠で囲み、背景に方眼を薄く敷く
+   ・地は無地。線を引くのは、行と1対1で並ぶ計算ノートと表だけ
    ・答えは罫書きの青、エラーは朱。アプリの色分けと同じ考えかた
    ========================================================================== */
 
@@ -22,7 +22,6 @@
 	--ink-soft: #7a808a;
 	--rule: #c2c6bd;
 	--rule-soft: #d9dcd4;
-	--grid-line: color-mix(in srgb, #c2c6bd 42%, transparent);
 	--kegaki: #23388a;
 	--kegaki-soft: #dfe3f2;
 	--mark: #b4372a;
@@ -36,7 +35,6 @@
 	--frame: 14px;
 	--gutter: clamp(20px, 5vw, 64px);
 	--measure: 1240px;
-	--grid-unit: 32px;
 
 	--section-gap: clamp(60px, 8vw, 112px);
 	--speed: 220ms;
@@ -53,7 +51,6 @@
 		--ink-soft: #757b85;
 		--rule: #333841;
 		--rule-soft: #24272d;
-		--grid-line: color-mix(in srgb, #3d434d 92%, transparent);
 		--kegaki: #8ea3f2;
 		--kegaki-soft: #1e2440;
 		--mark: #e0705a;
@@ -193,17 +190,14 @@ code {
    3. 図面の外枠とレイアウト
    -------------------------------------------------------------------------- */
 
-/* 用紙。方眼は紙の内側にだけ敷く */
+/* 用紙。方眼は敷かない（本文の行送りと揃わず、文字の下を横切って読みにくいため）。
+   罫線の役目は、行と1対1で並ぶ計算ノート（.calc）と表が受け持つ。 */
 .site {
 	position: relative;
 	min-height: 100vh;
 	margin: var(--frame);
 	border: 1px solid var(--graphite);
 	background-color: var(--paper);
-	background-image:
-		linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
-		linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
-	background-size: var(--grid-unit) var(--grid-unit);
 }
 
 /* 外枠の四隅に、位置合わせの小さな十字を置く */
@@ -1350,7 +1344,6 @@ td code {
 @media (max-width: 520px) {
 	:root {
 		--frame: 8px;
-		--grid-unit: 24px;
 	}
 
 	/* 狭い画面では行番号を落として、式と答えに幅を回す */
