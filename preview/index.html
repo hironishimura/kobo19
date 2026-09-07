@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>SujiCalc</title>
+<title>19工房</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -35,66 +35,32 @@
 
 	<section class="hero">
 		<div class="wrap">
-			<div class="hero__grid">
-				<div class="hero__text">
-					<p class="hero__eyebrow">仕事効率化<span class="badge">準備中</span></p>
+			<div class="hero__text hero__text--wide">
+				<p class="hero__eyebrow">WORKSHOP 19</p>
 
-					<h1 class="hero__title">SujiCalc</h1>
+				<h1 class="hero__title hero__title--site">つくったもの</h1>
 
-					<p class="hero__tagline">打つと右に答えが出る、ノート型の電卓。</p>
-
-					<p class="hero__lead">式を打つと、その行の右側にすぐ答えが出ます。「＝」は要りません。<br />
-書いた式はそのまま残るので、あとから数字を直せば、続きの計算も一度に合い直ります。</p>
-
-					<div class="hero__actions"><a class="btn" href="manual-getting-started.html">使い方を読む</a></div>
-
-					<dl class="facts"><div class="facts__row"><dt>バージョン</dt><dd>1.0</dd></div><div class="facts__row"><dt>対応</dt><dd>iOS 17 / iPadOS 17 / macOS 14 以降</dd></div><div class="facts__row"><dt>カテゴリ</dt><dd>仕事効率化</dd></div></dl>
-				</div>
-
-				<div class="hero__demo"><p class="calc__label">打つと、右に出る</p><div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">// 8月分の見積もり</code><span class="calc__ans"></span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">2</span><code class="calc__expr">単価 = 1200円</code><span class="calc__ans">1,200円</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">3</span><code class="calc__expr">個数 = 35</code><span class="calc__ans">35</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">4</span><code class="calc__expr">単価 * 個数</code><span class="calc__ans">42,000円</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">5</span><code class="calc__expr">+ 10%</code><span class="calc__ans">46,200円</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">6</span><code class="calc__expr"></code><span class="calc__ans"></span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">7</span><code class="calc__expr">梁幅 = 120 mm</code><span class="calc__ans">120 mm</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">8</span><code class="calc__expr">梁せい = 300 mm</code><span class="calc__ans">300 mm</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">9</span><code class="calc__expr">梁幅 * 梁せい</code><span class="calc__ans">36,000 mm²</span></div></div></div>
+				<p class="hero__lead">アプリや道具をつくって、ここに置いています。使い方の説明書と、サポートの窓口は、それぞれのページにあります。</p>
 			</div>
 		</div>
 	</section>
 
 	<section class="section">
 		<div class="wrap">
-			<div class="app-body">
-<h2>単位がそのまま通る</h2>
-<p>数字のうしろに単位を書くだけです。掛け算・割り算をすると <code>mm²</code> や <code>N/mm²</code> のように組み立てられ、種類の違う単位を足そうとするとエラーで止まります。</p>
-<div class="calc calc--plain"><div class="calc__line"><code class="calc__expr">120 mm * 300 mm</code><span class="calc__ans">36,000 mm²</span></div><div class="calc__line"><code class="calc__expr">36 kN / 36000 mm2</code><span class="calc__ans">1 N/mm²</span></div><div class="calc__line"><code class="calc__expr">10 km in mile</code><span class="calc__ans">6.2137119224 mile</span></div></div>
-<h2>名前を付けて使い回す</h2>
-<p>値に名前を付けると、ほかの行から呼び出せます。名前を変えれば、その名前を使っている行もまとめて書き換わります。前の行は <code>prev</code>、3行目は <code>#3</code>、空行までの合計は <code>sum</code> です。</p>
-<div class="calc calc--plain"><div class="calc__line"><code class="calc__expr">梁幅 = 120 mm</code><span class="calc__ans">120 mm</span></div><div class="calc__line"><code class="calc__expr">梁せい = 300 mm</code><span class="calc__ans">300 mm</span></div><div class="calc__line"><code class="calc__expr">梁幅 * 梁せい</code><span class="calc__ans">36,000 mm²</span></div></div>
-<h2>表にしてまとめて集計</h2>
-<p>値を並べて持てます。<code>sum</code> <code>avg</code> <code>min</code> <code>max</code> <code>sort</code> で扱え、文字も混ぜられるので、計算書の見出しを付けられます。</p>
-<div class="calc calc--plain"><div class="calc__line"><code class="calc__expr">価格 = [4800, 12000, 3200]</code><span class="calc__ans">[4,800, 12,000, 3,200]</span></div><div class="calc__line"><code class="calc__expr">sum(価格)</code><span class="calc__ans">20,000</span></div><div class="calc__line"><code class="calc__expr">avg(価格)</code><span class="calc__ans">6,666.6666666667</span></div></div>
-<h2>グラフになる</h2>
-<p><code>plot</code> と書けば曲線が、<code>chart</code> と書けば棒グラフが本文の下に出ます。打ち直すたびにその場で描き直されます。</p>
-<div class="calc calc--plain"><div class="calc__line"><code class="calc__expr">plot(x^2 - 3x)</code><span class="calc__ans"></span></div><div class="calc__line"><code class="calc__expr">chart(家賃, 光熱費, 食費)</code><span class="calc__ans"></span></div></div>
-<h2>かんたんなプログラム</h2>
-<p><code>if</code> <code>for</code> <code>while</code> <code>def</code> が Python と同じ書き方で使えます。繰り返しの計算や、自分用の関数を作れます。作った関数はほかのシートからも呼べます。</p>
-<div class="calc calc--plain"><div class="calc__line"><code class="calc__expr">def 税込(x):</code><span class="calc__ans"></span></div><div class="calc__line"><code class="calc__expr">return x * 1.1</code><span class="calc__ans"></span></div><div class="calc__line"><code class="calc__expr">税込(4800)</code><span class="calc__ans">5,280</span></div></div>
-<h2>3つの端末で同じ書類</h2>
-<p>iPhone・iPad・Mac の書類は iCloud で自動的に同期します。現場の iPhone に打ち込んだ数字を、事務所の Mac でそのまま続けられます。別々のシートを編集していれば、どちらも残ります。</p>
-<h2>何も集めません</h2>
-<p>広告も、利用状況の解析も入っていません。そもそも、外部と通信する機能がアプリに含まれていません。書いた内容は、お使いの端末とご自身の iCloud にだけ保存されます。</p>
-			</div>
+			<p class="eyebrow">プロダクツ</p>
+			<div class="app-grid"><article class="app-card reveal">
+		<div class="app-card__body">
+			<h2 class="app-card__title"><a href="app-sujicalc.html">SujiCalc</a><span class="badge">準備中</span></h2>
+			<p class="app-card__tagline">打つと右に答えが出る、ノート型の電卓。</p>
+			<p class="app-card__text">式を打つと、その行の右側にすぐ答えが出ます。「＝」は要りません。 書いた式はそのまま残るので、あとから数字を直せば、続きの計算も一度に合い直ります。</p>
+			<ul class="app-card__facts"><li>バージョン 1.0</li><li>iOS 17 / iPadOS 17 / macOS 14 以降</li><li>仕事効率化</li></ul>
+			<p class="app-card__actions">
+				<a class="btn" href="app-sujicalc.html">SujiCalc を見る</a>
+				<a class="btn btn--quiet" href="manual-getting-started.html">使い方（11章）</a>
+				
+			</p>
 		</div>
-	</section>
-
-	<section class="section">
-		<div class="wrap">
-			<p class="eyebrow">説明書</p>
-			<h2 class="section-title">使い方</h2>
-			<p class="section-lead">上から順に読めば一通り分かるように並べています。</p>
-<ol class="chapter-list"><li class="chapter-list__item"><a href="manual-getting-started.html"><span class="chapter-list__no">01</span><span class="chapter-list__body"><span class="chapter-list__title">はじめに</span><span class="chapter-list__text">SujiCalc がどんな電卓か、画面のどこに何があるか。</span></span></a></li><li class="chapter-list__item"><a href="manual-basics.html"><span class="chapter-list__no">02</span><span class="chapter-list__body"><span class="chapter-list__title">基本の書きかた</span><span class="chapter-list__text">式の書き方、前の行の続け方、数の書き方、パーセントの4つの意味。</span></span></a></li><li class="chapter-list__item"><a href="manual-units.html"><span class="chapter-list__no">03</span><span class="chapter-list__body"><span class="chapter-list__title">単位</span><span class="chapter-list__text">単位を付けたまま計算する。換算、mm²やN/mm²の組み立て、坪・畳・万。</span></span></a></li><li class="chapter-list__item"><a href="manual-names.html"><span class="chapter-list__no">04</span><span class="chapter-list__body"><span class="chapter-list__title">名前と参照</span><span class="chapter-list__text">値に名前を付けて呼び出す。prev・#3・sum・total の使い分け。</span></span></a></li><li class="chapter-list__item"><a href="manual-lists.html"><span class="chapter-list__no">05</span><span class="chapter-list__body"><span class="chapter-list__title">表と文字</span><span class="chapter-list__text">値を並べて集計する。文字を混ぜて計算書の見出しを作る。</span></span></a></li><li class="chapter-list__item"><a href="manual-functions.html"><span class="chapter-list__no">06</span><span class="chapter-list__body"><span class="chapter-list__title">関数と定数</span><span class="chapter-list__text">使える関数の一覧と、角度・丸めの決まり。</span></span></a></li><li class="chapter-list__item"><a href="manual-graph.html"><span class="chapter-list__no">07</span><span class="chapter-list__body"><span class="chapter-list__title">グラフ</span><span class="chapter-list__text">plot で曲線、chart で棒グラフ。本文の下にその場で描かれます。</span></span></a></li><li class="chapter-list__item"><a href="manual-program.html"><span class="chapter-list__no">08</span><span class="chapter-list__body"><span class="chapter-list__title">プログラム</span><span class="chapter-list__text">if・for・while・def が Python と同じ書き方で使えます。</span></span></a></li><li class="chapter-list__item"><a href="manual-sheets.html"><span class="chapter-list__no">09</span><span class="chapter-list__body"><span class="chapter-list__title">シートと同期</span><span class="chapter-list__text">書類を分ける、行を固定する、iPhone と Mac で同じ書類を使う。</span></span></a></li><li class="chapter-list__item"><a href="manual-keypad.html"><span class="chapter-list__no">10</span><span class="chapter-list__body"><span class="chapter-list__title">キーパッドと設定</span><span class="chapter-list__text">キーの並べ替え、取り消し、表示や計算の設定。</span></span></a></li><li class="chapter-list__item"><a href="manual-shortcuts.html"><span class="chapter-list__no">11</span><span class="chapter-list__body"><span class="chapter-list__title">ショートカット一覧</span><span class="chapter-list__text">Mac と、キーボードをつないだ iPad で使えるキー操作。</span></span></a></li></ol>
-		</div>
-	</section>
-
-	<section class="section">
-		<div class="wrap">
-			<p class="eyebrow">このアプリについて</p>
-<ul class="policy-list"><li><a href="support.html"><span class="policy-list__title">サポート</span><span class="policy-list__text">SujiCalc のよくある質問と、お問い合わせ先。</span></a></li><li><a href="privacy.html"><span class="policy-list__title">プライバシーポリシー</span><span class="policy-list__text">SujiCalc は利用者の情報を一切収集しません。</span></a></li><li><a href="terms.html"><span class="policy-list__title">利用規約</span><span class="policy-list__text">SujiCalc をお使いいただくうえでの決まりと免責事項。</span></a></li></ul>
+	</article></div>
 		</div>
 	</section>
 	</main>

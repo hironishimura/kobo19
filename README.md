@@ -13,8 +13,8 @@
 
 | ページ | 内容 |
 |---|---|
-| [preview/index.html](preview/index.html) | トップ（アプリが1本なので、そのまま製品ページ） |
-| [preview/apps.html](preview/apps.html) | アプリ一覧（2本目からはトップがこの形になります） |
+| [preview/index.html](preview/index.html) | トップ（プロダクツの入口。ここから各アプリのページへ） |
+| [preview/apps.html](preview/apps.html) | アプリ一覧（`/apps/` のページ。トップとほぼ同じ内容） |
 | [preview/app-sujicalc.html](preview/app-sujicalc.html) | SujiCalc の製品ページ |
 | [preview/docs.html](preview/docs.html) | 説明書とサポートの一覧（アプリごとに区切られます） |
 | [preview/manual-basics.html](preview/manual-basics.html) | 説明書の各章（全11章） |
@@ -42,10 +42,12 @@ php build-preview.php
 資料は必ず「**どのアプリのものか**」と「**種別**」を持ちます。だからアプリが増えても、
 説明書もサポートもアプリごとに分かれたまま増えていきます。
 
-**トップページはアプリの数で自動的に変わります。**
+**トップページは、つくったものの入口です。** アプリが何本でも、トップにはカードが並び、
+それぞれの「◯◯ を見る」ボタンから製品ページへ飛びます。アプリを1件足すだけで、
+カードもボタンも自動で増えます。
 
-- 1本のとき — そのアプリの製品ページがそのままトップになります
-- 2本以上のとき — アプリの一覧に切り替わります（設定は要りません）
+カードには、アプリ名・状態の印・一行の説明・説明文・バージョンなどが出ます。
+ボタンは「◯◯ を見る」「使い方（N章）」、App Store の URL を入れていれば「App Store」の3つです。
 
 ---
 
@@ -130,9 +132,8 @@ FTP の場合は `wordpress/wp-content/themes/kobo19/` フォルダごとアッ�
 
 ### 5. サイトの設定
 
-外観 → カスタマイズ → **サイトの設定** で、連絡先メールアドレスと、
-アプリが2本以上になったときのトップの見出しを設定します。
-アプリ個別の情報は、それぞれのアプリの編集画面で入れます。
+外観 → カスタマイズ → **サイトの設定** で、トップの見出し（小見出し・見出し・説明文）と
+連絡先メールアドレスを設定します。アプリ個別の情報は、それぞれのアプリの編集画面で入れます。
 
 ### 6. メニューを設定する（任意）
 
@@ -196,7 +197,7 @@ kobo19/
 ├── style.css              テーマ情報（実際のスタイルは assets/css/main.css）
 ├── theme.json             ブロックエディタの色と書体
 ├── functions.php          読み込みと基本設定
-├── front-page.php         トップ（アプリ1本なら製品ページ、2本以上なら一覧）
+├── front-page.php         トップ（プロダクツの入口。カードとボタンが並ぶ）
 ├── archive-app.php        アプリ一覧
 ├── single-app.php         アプリの製品ページ
 ├── archive-doc.php        説明書とサポートの一覧（アプリごと）
@@ -214,7 +215,7 @@ kobo19/
 │   ├── starter-manual.php 説明書 11章の文章
 │   └── starter-pages.php  サポート・プライバシー・規約の文章
 └── template-parts/
-    ├── app-hero.php       アプリの見出し（トップと製品ページで共通）
+    ├── app-hero.php       アプリの見出し（製品ページ）
     ├── app-card.php       アプリのカード（一覧用）
     └── app-docs.php       アプリに紐づく資料の一覧
 ```

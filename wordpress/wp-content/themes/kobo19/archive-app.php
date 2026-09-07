@@ -12,9 +12,9 @@ get_header();
 
 <section class="page-head">
 	<div class="wrap">
-		<p class="eyebrow"><?php echo esc_html( kobo19_option( 'kobo19_home_eyebrow', 'つくったもの' ) ); ?></p>
+		<p class="eyebrow">プロダクツ</p>
 		<h1 class="page-head__title">アプリ</h1>
-		<p class="page-head__lead"><?php echo esc_html( kobo19_option( 'kobo19_home_lead', 'つくったアプリを置いています。使い方の説明書と、サポートの窓口はそれぞれのページにあります。' ) ); ?></p>
+		<p class="page-head__lead"><?php echo esc_html( kobo19_option( 'kobo19_home_lead', 'アプリや道具をつくって、ここに置いています。使い方の説明書と、サポートの窓口は、それぞれのページにあります。' ) ); ?></p>
 	</div>
 </section>
 

@@ -24,24 +24,24 @@ function kobo19_customize_register( $wp_customize ) {
 		array(
 			'title'       => 'サイトの設定',
 			'priority'    => 30,
-			'description' => 'アプリが2本以上になったときのトップの見出しと、連絡先を設定します。アプリ個別の情報は「アプリ」の編集画面で入れます。',
+			'description' => 'トップの見出しと連絡先を設定します。アプリ個別の情報は「アプリ」の編集画面で入れます。',
 		)
 	);
 
 	$fields = array(
 		'kobo19_home_eyebrow'  => array(
 			'label'   => 'トップの小見出し',
-			'default' => 'つくったもの',
+			'default' => 'WORKSHOP 19',
 			'type'    => 'text',
 		),
 		'kobo19_home_title'    => array(
 			'label'   => 'トップの見出し',
-			'default' => 'アプリ',
+			'default' => 'つくったもの',
 			'type'    => 'text',
 		),
 		'kobo19_home_lead'     => array(
 			'label'   => 'トップの説明文',
-			'default' => 'つくったアプリを置いています。使い方の説明書と、サポートの窓口はそれぞれのページにあります。',
+			'default' => 'アプリや道具をつくって、ここに置いています。使い方の説明書と、サポートの窓口は、それぞれのページにあります。',
 			'type'    => 'textarea',
 		),
 		'kobo19_contact_email' => array(

@@ -44,13 +44,15 @@ $kobo19_chapters = kobo19_app_chapters( $kobo19_app_id );
 			</ul>
 		<?php endif; ?>
 
-		<p class="app-card__links">
-			<a href="<?php the_permalink(); ?>">くわしく見る →</a>
+		<p class="app-card__actions">
+			<a class="btn" href="<?php the_permalink(); ?>"><?php the_title(); ?> を見る</a>
+
 			<?php if ( $kobo19_chapters ) : ?>
-				<a href="<?php echo esc_url( get_permalink( $kobo19_chapters[0] ) ); ?>">使い方（<?php echo esc_html( (string) count( $kobo19_chapters ) ); ?>章）</a>
+				<a class="btn btn--quiet" href="<?php echo esc_url( get_permalink( $kobo19_chapters[0] ) ); ?>">使い方（<?php echo esc_html( (string) count( $kobo19_chapters ) ); ?>章）</a>
 			<?php endif; ?>
+
 			<?php if ( $kobo19_store ) : ?>
-				<a href="<?php echo esc_url( $kobo19_store ); ?>">App Store</a>
+				<a class="btn btn--quiet" href="<?php echo esc_url( $kobo19_store ); ?>">App Store</a>
 			<?php endif; ?>
 		</p>
 	</div>

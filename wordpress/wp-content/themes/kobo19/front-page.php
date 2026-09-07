@@ -1,9 +1,9 @@
 <?php
 /**
- * トップページ。
+ * トップページ。つくったプロダクツの入口。
  *
- * アプリが1本のときは、そのアプリの製品ページをそのまま出します。
- * 2本以上になったら、自動でアプリの一覧に切り替わります。
+ * アプリの本数にかかわらず、ここは常に一覧です。それぞれのカードから
+ * 製品ページへ飛びます。文言は 外観 → カスタマイズ → サイトの設定 から。
  *
  * @package kobo19
  */
@@ -15,48 +15,23 @@ get_header();
 $kobo19_apps = kobo19_apps();
 ?>
 
-<?php if ( 1 === count( $kobo19_apps ) ) : ?>
+<section class="hero">
+	<div class="wrap">
+		<div class="hero__text hero__text--wide">
+			<p class="hero__eyebrow"><?php echo esc_html( kobo19_option( 'kobo19_home_eyebrow', 'WORKSHOP 19' ) ); ?></p>
 
-	<?php
-	// アプリが1本だけのうちは、トップをそのアプリのページにする。
-	$kobo19_app = $kobo19_apps[0];
+			<h1 class="hero__title hero__title--site"><?php echo esc_html( kobo19_option( 'kobo19_home_title', 'つくったもの' ) ); ?></h1>
 
-	get_template_part(
-		'template-parts/app-hero',
-		null,
-		array(
-			'app_id'  => $kobo19_app->ID,
-			'heading' => 'h1',
-		)
-	);
-
-	$kobo19_body = apply_filters( 'the_content', $kobo19_app->post_content );
-
-	if ( trim( wp_strip_all_tags( $kobo19_body ) ) ) :
-		?>
-		<section class="section">
-			<div class="wrap">
-				<div class="app-body"><?php echo $kobo19_body; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
-			</div>
-		</section>
-		<?php
-	endif;
-
-	get_template_part( 'template-parts/app-docs', null, array( 'app_id' => $kobo19_app->ID ) );
-	?>
-
-<?php elseif ( $kobo19_apps ) : ?>
-
-	<section class="page-head">
-		<div class="wrap">
-			<p class="eyebrow"><?php echo esc_html( kobo19_option( 'kobo19_home_eyebrow', 'つくったもの' ) ); ?></p>
-			<h1 class="page-head__title"><?php echo esc_html( kobo19_option( 'kobo19_home_title', 'アプリ' ) ); ?></h1>
-			<p class="page-head__lead"><?php echo esc_html( kobo19_option( 'kobo19_home_lead', 'つくったアプリを置いています。使い方の説明書と、サポートの窓口はそれぞれのページにあります。' ) ); ?></p>
+			<p class="hero__lead"><?php echo esc_html( kobo19_option( 'kobo19_home_lead', 'アプリや道具をつくって、ここに置いています。使い方の説明書と、サポートの窓口は、それぞれのページにあります。' ) ); ?></p>
 		</div>
-	</section>
+	</div>
+</section>
 
-	<section class="section" style="padding-top:0;">
-		<div class="wrap">
+<section class="section">
+	<div class="wrap">
+		<?php if ( $kobo19_apps ) : ?>
+			<p class="eyebrow">プロダクツ<?php echo count( $kobo19_apps ) > 1 ? ' ／ ' . esc_html( (string) count( $kobo19_apps ) ) . ' 点' : ''; ?></p>
+
 			<div class="app-grid">
 				<?php
 				foreach ( $kobo19_apps as $kobo19_app ) :
@@ -67,20 +42,14 @@ $kobo19_apps = kobo19_apps();
 				wp_reset_postdata();
 				?>
 			</div>
-		</div>
-	</section>
-
-<?php else : ?>
-
-	<section class="page-head">
-		<div class="wrap">
-			<p class="eyebrow">はじめに</p>
-			<h1 class="page-head__title">アプリを登録してください</h1>
-			<p class="page-head__lead">管理画面の「アプリ」から1件追加すると、ここに出ます。説明書やサポートのページは「資料」から追加して、どのアプリのものかを選びます。</p>
-		</div>
-	</section>
-
-<?php endif; ?>
+		<?php else : ?>
+			<div class="notice">
+				<p class="notice__code">まだありません</p>
+				<p>管理画面の「アプリ」から1件追加すると、ここに出ます。説明書やサポートのページは「資料」から追加して、どのアプリのものかを選びます。</p>
+			</div>
+		<?php endif; ?>
+	</div>
+</section>
 
 <?php
 get_footer();

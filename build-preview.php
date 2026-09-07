@@ -410,7 +410,7 @@ function kobo19_app_card( $app, $chapters ) {
 	}
 
 	$badge = $app['meta']['status'] ? '<span class="badge">' . esc_html( $app['meta']['status'] ) . '</span>' : '';
-	$store = $app['meta']['store'] ? '<a href="' . esc_url( $app['meta']['store'] ) . '">App Store</a>' : '';
+	$store = $app['meta']['store'] ? '<a class="btn btn--quiet" href="' . esc_url( $app['meta']['store'] ) . '">App Store</a>' : '';
 
 	return '<article class="app-card reveal">
 		<div class="app-card__body">
@@ -418,9 +418,9 @@ function kobo19_app_card( $app, $chapters ) {
 			<p class="app-card__tagline">' . esc_html( $app['meta']['tagline'] ) . '</p>
 			<p class="app-card__text">' . esc_html( str_replace( "\n", ' ', $app['meta']['lead'] ) ) . '</p>
 			' . $facts_html . '
-			<p class="app-card__links">
-				<a href="app-' . $app['slug'] . '.html">くわしく見る →</a>
-				<a href="manual-getting-started.html">使い方（' . count( $chapters ) . '章）</a>
+			<p class="app-card__actions">
+				<a class="btn" href="app-' . $app['slug'] . '.html">' . esc_html( $app['title'] ) . ' を見る</a>
+				<a class="btn btn--quiet" href="manual-getting-started.html">使い方（' . count( $chapters ) . '章）</a>
 				' . $store . '
 			</p>
 		</div>
@@ -432,19 +432,29 @@ function kobo19_app_card( $app, $chapters ) {
 $out  = __DIR__ . '/preview';
 $body = kobo19_render( $app['content'] );
 
-// --- トップ（アプリが1本なので、そのまま製品ページ）---
+// --- トップ（プロダクツの入口。アプリの本数によらず一覧）---
 file_put_contents(
 	"$out/index.html",
-	kobo19_head( $APP ) . kobo19_app_hero( $app )
-	. '
-	<section class="section">
+	kobo19_head( $SITE ) . '
+	<section class="hero">
 		<div class="wrap">
-			<div class="app-body">
-' . $body . '
+			<div class="hero__text hero__text--wide">
+				<p class="hero__eyebrow">WORKSHOP 19</p>
+
+				<h1 class="hero__title hero__title--site">つくったもの</h1>
+
+				<p class="hero__lead">アプリや道具をつくって、ここに置いています。使い方の説明書と、サポートの窓口は、それぞれのページにあります。</p>
 			</div>
 		</div>
 	</section>
-' . kobo19_app_docs_section( $chapters, $pages ) . kobo19_foot()
+
+	<section class="section">
+		<div class="wrap">
+			<p class="eyebrow">プロダクツ</p>
+			<div class="app-grid">' . kobo19_app_card( $app, $chapters ) . '</div>
+		</div>
+	</section>
+' . kobo19_foot()
 );
 
 // --- 製品ページ ---
@@ -468,9 +478,9 @@ file_put_contents(
 	kobo19_head( "アプリ｜$SITE" ) . '
 	<section class="page-head">
 		<div class="wrap">
-			<p class="eyebrow">つくったもの</p>
+			<p class="eyebrow">プロダクツ</p>
 			<h1 class="page-head__title">アプリ</h1>
-			<p class="page-head__lead">つくったアプリを置いています。使い方の説明書と、サポートの窓口はそれぞれのページにあります。</p>
+			<p class="page-head__lead">アプリや道具をつくって、ここに置いています。使い方の説明書と、サポートの窓口は、それぞれのページにあります。</p>
 		</div>
 	</section>
 
