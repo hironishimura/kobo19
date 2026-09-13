@@ -41,24 +41,29 @@
 				<header class="manual__head">
 					<p class="eyebrow"><a href="app-sujicalc.html">SujiCalc</a> ／ 第4章</p>
 					<h1 class="manual__title"><span class="manual__no">04</span>名前と参照</h1>
-					<p class="manual__summary">値に名前を付けて呼び出す。prev・#3・sum・total の使い分け。</p>
+					<p class="manual__summary">値に名前を付けて呼び出す。名前を並べて足す。prev・#3・sum・total の使い分け。</p>
 				</header>
 
 				<div class="entry__body">
 <h2>名前を付ける</h2>
 <p><code>名前 = 値</code> と書くと、ほかの行から呼び出せます。</p>
-<div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">梁幅 = 120 mm</code><span class="calc__ans">120 mm</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">2</span><code class="calc__expr">梁せい = 300 mm</code><span class="calc__ans">300 mm</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">3</span><code class="calc__expr">断面積 = 梁幅 * 梁せい</code><span class="calc__ans">36,000 mm²</span></div></div>
+<div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">梁幅 = 120 mm</code><span class="calc__ans">120 mm</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">2</span><code class="calc__expr">梁せい = 300 mm</code><span class="calc__ans">300 mm</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">3</span><code class="calc__expr">断面積 = 梁幅 × 梁せい</code><span class="calc__ans">36,000 mm²</span></div></div>
 <p>日本語でも英語でも構いません。</p>
+<h2>名前を並べると、足し算になる</h2>
+<p>名前を付けた値を、空白で区切って並べると<strong>足し算</strong>になります。経費のように「これとこれとこれ」を合計するとき、<code>+</code> を打たずに済みます。</p>
+<div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">交通費 = 3,200円</code><span class="calc__ans">3,200円</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">2</span><code class="calc__expr">宿代 = 9,800円</code><span class="calc__ans">9,800円</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">3</span><code class="calc__expr">交通費 宿代</code><span class="calc__ans">13,000円</span></div></div>
+<ul><li><strong>名前と名前の間には必ず空白を入れます。</strong> <code>交通費宿代</code> とくっつけると1つの名前と見なされ、知らない名前としてエラーになります</li><li><code>2 梁幅</code> のように、<strong>数や式のうしろに名前が続くときは掛け算</strong>です（2倍のつもりで書くのが普通なので）</li><li>単位の付け方（<code>120 mm</code>）は変わりません。掛けたいときは <code>×</code> を書きます</li></ul>
+<p>Mac と iPad の左の一覧から「名前の付いた値」を続けて押すと、<code>交通費 + 宿代</code> のように <code>+</code> でつないで入ります。</p>
 <h2>答えをクリックして使う</h2>
 <p>右の答えをクリック（iPhone・iPad はタップ）すると、その値がいまカーソルのある場所に入ります。引っぱって式の中へ落とすこともできます。</p>
 <p>名前の無い行だったときは自動で名前が付く（<code>x1</code> など）ので、あとから何度でも呼び出せます。</p>
 <h2>名前を付け替えると、使っている行もまとめて変わる</h2>
 <p>答えを右クリック（iPhone・iPad は長押し）すると、その行に名前を付けたり付け替えたりできます。</p>
-<p><strong>すでに名前がある行を付け替えると、その名前を使っている行もまとめて書き換わります。</strong> <code>単価</code> を <code>原価</code> に変えれば、<code>単価 * 個数</code> も <code>原価 * 個数</code> になります。</p>
+<p><strong>すでに名前がある行を付け替えると、その名前を使っている行もまとめて書き換わります。</strong> <code>単価</code> を <code>原価</code> に変えれば、<code>単価 × 個数</code> も <code>原価 × 個数</code> になります。</p>
 <p>名前の一部が同じなだけの語（<code>単価計</code>）や、メモの行は巻き込みません。</p>
 <h2>そのほかの呼び出し方</h2>
 <figure class="wp-block-table"><table><thead><tr><th>書き方</th><th>意味</th></tr></thead><tbody><tr><td><code>prev</code> / <code>ans</code></td><td>前の行の答え</td></tr><tr><td><code>#3</code></td><td>3行目の答え</td></tr><tr><td><code>sum</code></td><td>直前の空行から、ここまでの合計</td></tr><tr><td><code>total</code></td><td>先頭から、ここまでの合計</td></tr></tbody></table></figure>
-<div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">12000</code><span class="calc__ans">12,000</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">2</span><code class="calc__expr">8400</code><span class="calc__ans">8,400</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">3</span><code class="calc__expr">3200</code><span class="calc__ans">3,200</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">4</span><code class="calc__expr">sum</code><span class="calc__ans">23,600</span></div></div>
+<div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">12,000</code><span class="calc__ans">12,000</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">2</span><code class="calc__expr">8,400</code><span class="calc__ans">8,400</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">3</span><code class="calc__expr">3,200</code><span class="calc__ans">3,200</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">4</span><code class="calc__expr">sum</code><span class="calc__ans">23,600</span></div></div>
 <p>空行を入れるとまとまりが切れるので、<code>sum</code> の範囲もそこで切れます。項目ごとに小計を出したいときに使います。</p>
 <h2>使えない名前</h2>
 <p><code>prev</code> <code>sum</code> <code>total</code> や、単位・関数と同じ名前は付けられません。<code>sum = 5</code> はエラーになります。</p>

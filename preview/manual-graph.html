@@ -41,23 +41,31 @@
 				<header class="manual__head">
 					<p class="eyebrow"><a href="app-sujicalc.html">SujiCalc</a> ／ 第7章</p>
 					<h1 class="manual__title"><span class="manual__no">07</span>グラフ</h1>
-					<p class="manual__summary">plot で曲線、chart で棒グラフ。本文の下にその場で描かれます。</p>
+					<p class="manual__summary">plot で曲線と曲面、chart で棒グラフ。式のすぐ下にその場で描かれます。</p>
 				</header>
 
 				<div class="entry__body">
-<p><code>plot(...)</code> か <code>chart(...)</code> と書くと、本文の下にグラフが出ます。打ち直すたびにその場で描き直されます。</p>
+<p><code>plot(...)</code> か <code>chart(...)</code> と書くと、<strong>その式のすぐ下</strong>にグラフが出ます。打ち直すたびにその場で描き直され、本文と一緒にスクロールします。Mac でも iPhone でも同じ絵です。</p>
 <h2>曲線</h2>
 <div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">plot(x^2 - 3x)</code><span class="calc__ans"></span></div></div>
 <p><code>x</code> を −10 から 10 まで動かして描きます。範囲を決めることもできます。</p>
 <div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">plot(sin(x), 0, 12)</code><span class="calc__ans"></span></div></div>
 <p><code>plot(1/x)</code> のように途中で切れる式は、線を無理につながずに分けて描きます。</p>
+<h2>曲面（3つの軸）</h2>
+<p>式に <code>x</code> と <code>y</code> の両方が出てくると、x・y・答えの3つの軸で<strong>曲面</strong>として描きます。</p>
+<div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">plot(x^2 - y^2)</code><span class="calc__ans"></span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">2</span><code class="calc__expr">plot(sin(x) × cos(y), -3, 3)</code><span class="calc__ans"></span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">3</span><code class="calc__expr">plot(x × y, -5, 5, 0, 10)</code><span class="calc__ans"></span></div></div>
+<p>範囲の書き方は3通りです。</p>
+<figure class="wp-block-table"><table><thead><tr><th>書き方</th><th>意味</th></tr></thead><tbody><tr><td><code>plot(式)</code></td><td>x も y も −10〜10</td></tr><tr><td><code>plot(式, 左, 右)</code></td><td>x と y を同じ範囲に</td></tr><tr><td><code>plot(式, x左, x右, y左, y右)</code></td><td>それぞれ別の範囲に</td></tr></tbody></table></figure>
+<p><strong>横になぞると向きが変わります。</strong> 回し始めれば、そのまま上下に動かして見下ろす角も変えられます。縦になぞったときは、ふつうに本文がスクロールします。向きはアプリを閉じると最初に戻ります。</p>
+<p>高さは青（低い）→灰→橙（高い）で塗り分けます。</p>
+<p>シートに <code>y = 3</code> のような名前があるときは、その値を使って曲線として描きます。</p>
 <h2>棒グラフ</h2>
 <div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">chart(家賃, 光熱費, 食費)</code><span class="calc__ans"></span></div></div>
 <p>名前を渡すと、その名前がそのまま見出しになります。表を丸ごと渡すこともできます。</p>
-<div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">価格 = [4800, 12000, 3200]</code><span class="calc__ans">[4,800, 12,000, 3,200]</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">2</span><code class="calc__expr">chart(価格)</code><span class="calc__ans"></span></div></div>
+<div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">価格 = [4,800, 12,000, 3,200]</code><span class="calc__ans">[4,800, 12,000, 3,200]</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">2</span><code class="calc__expr">chart(価格)</code><span class="calc__ans"></span></div></div>
 <h2>隠す</h2>
-<p>ツールバーのグラフボタンで、グラフの領域を隠せます。式はそのまま残ります。</p>
-<aside class="callout">表（リスト）を `plot` に渡すとエラーになり、`chart` を使うよう案内が出ます。曲線は式を、棒グラフは値を描くものだからです。</aside>
+<p>ツールバーのグラフボタンで、すべてのグラフを隠せます。式はそのまま残ります。</p>
+<aside class="callout">表（リスト）を `plot` に渡すとエラーになり、`chart` を使うよう案内が出ます。曲線・曲面は式を、棒グラフは値を描くものだからです。</aside>
 				</div>
 
 				<nav class="chapter-nav" aria-label="前後の章"><div class="chapter-nav__side"><a href="manual-functions.html"><span class="chapter-nav__label">前の章</span><span class="chapter-nav__title">← 関数と定数</span></a></div><div class="chapter-nav__side chapter-nav__side--next"><a href="manual-program.html"><span class="chapter-nav__label">次の章</span><span class="chapter-nav__title">プログラム →</span></a></div></nav>

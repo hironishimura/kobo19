@@ -47,19 +47,22 @@
 				<div class="entry__body">
 <h2>表（リスト）</h2>
 <p>角かっこで囲むと、値を並べて持てます。</p>
-<div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">価格 = [4800, 12000, 3200]</code><span class="calc__ans">[4,800, 12,000, 3,200]</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">2</span><code class="calc__expr">sum(価格)</code><span class="calc__ans">20,000</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">3</span><code class="calc__expr">avg(価格)</code><span class="calc__ans">6,666.6666666667</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">4</span><code class="calc__expr">max(価格)</code><span class="calc__ans">12,000</span></div></div>
+<div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">価格 = [4,800, 12,000, 3,200]</code><span class="calc__ans">[4,800, 12,000, 3,200]</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">2</span><code class="calc__expr">sum(価格)</code><span class="calc__ans">20,000</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">3</span><code class="calc__expr">avg(価格)</code><span class="calc__ans">6,666.6666666667</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">4</span><code class="calc__expr">max(価格)</code><span class="calc__ans">12,000</span></div></div>
 <h3>取り出す・つなぐ・くり返す</h3>
-<figure class="wp-block-table"><table><thead><tr><th>書き方</th><th>意味</th></tr></thead><tbody><tr><td><code>価格[0]</code></td><td>1つめ（0から数えます）</td></tr><tr><td><code>価格[-1]</code></td><td>最後</td></tr><tr><td><code>価格 + [7]</code></td><td>うしろにつなぐ</td></tr><tr><td><code>価格 * 3</code></td><td>3回くり返す</td></tr><tr><td><code>len(価格)</code></td><td>個数</td></tr><tr><td><code>sort(価格)</code></td><td>小さい順に並べ替える</td></tr><tr><td><code>reverse(価格)</code></td><td>逆順にする</td></tr></tbody></table></figure>
+<figure class="wp-block-table"><table><thead><tr><th>書き方</th><th>意味</th></tr></thead><tbody><tr><td><code>価格[0]</code></td><td>1つめ（0から数えます）</td></tr><tr><td><code>価格[-1]</code></td><td>最後</td></tr><tr><td><code>価格 + [7,000]</code></td><td>うしろにつなぐ</td></tr><tr><td><code>価格 × 3</code></td><td>3回くり返す</td></tr><tr><td><code>len(価格)</code></td><td>個数</td></tr><tr><td><code>sort(価格)</code></td><td>小さい順に並べ替える</td></tr><tr><td><code>reverse(価格)</code></td><td>逆順にする</td></tr></tbody></table></figure>
 <p><code>sum</code> <code>avg</code> <code>min</code> <code>max</code> は、表を丸ごと受け取れます。<code>for x in 価格:</code> のように繰り返しにも使えます。</p>
 <h2>文字</h2>
 <p>引用符で囲むと文字になります。</p>
 <div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">&quot;8月分 見積もり&quot;</code><span class="calc__ans">&quot;8月分 見積もり&quot;</span></div></div>
 <p><code>+</code> でつなげるのは<strong>文字どうしだけ</strong>です。<code>"梁幅 " + 120</code> はエラーになり、<code>str(値)</code> を使うよう案内が出ます。数と文字が黙って混ざらないようにするためです。</p>
-<p><code>"ab" * 3</code> はくり返し、<code>len</code> と <code>reverse</code>、<code>文字[0]</code> が使えます。</p>
+<div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">&quot;杉の柱 &quot; + str(120 mm)</code><span class="calc__ans">&quot;杉の柱 120 mm&quot;</span></div></div>
+<p><code>"ab" × 3</code> はくり返し、<code>len</code> と <code>reverse</code>、<code>文字[0]</code> が使えます。</p>
 <h2>表と文字は合計に入らない</h2>
 <p>表や文字の行は <code>sum</code> <code>total</code> に入りません。<code>+</code> が「つなぐ」意味になってしまい、合計が別のものになるためです。</p>
+<h2>表示の幅</h2>
+<p>表が長いと、答えの欄の幅に収まらない分は「…」になります。全部見たいときは、答えの欄の境目をつまんで広げてください。</p>
 <h2>大きさの上限</h2>
-<p><code>[1] * 200000</code> のような膨らみ方は途中で止まります（10万個）。答えの欄の表示も100個で打ち切り、「… 全 N 個」と出ます。</p>
+<p><code>[1] × 200000</code> のような膨らみ方は途中で止まります（10万個）。答えの欄の表示も100個で打ち切り、「… 全 N 個」と出ます。</p>
 				</div>
 
 				<nav class="chapter-nav" aria-label="前後の章"><div class="chapter-nav__side"><a href="manual-names.html"><span class="chapter-nav__label">前の章</span><span class="chapter-nav__title">← 名前と参照</span></a></div><div class="chapter-nav__side chapter-nav__side--next"><a href="manual-functions.html"><span class="chapter-nav__label">次の章</span><span class="chapter-nav__title">関数と定数 →</span></a></div></nav>

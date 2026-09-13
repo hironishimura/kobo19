@@ -47,13 +47,19 @@
 				<div class="entry__body">
 <h2>そのまま書く</h2>
 <p>式を打てば、その行の右に答えが出ます。<code>=</code> は要りません。</p>
-<div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">1200 * 35</code><span class="calc__ans">42,000</span></div></div>
+<div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">1,200 × 35</code><span class="calc__ans">42,000</span></div></div>
+<h2>掛け算は × で出る</h2>
+<p>キーボードで <code>*</code> を打っても、画面には <strong><code>×</code></strong> で出ます。キーパッドの × も同じです。読みやすさのために表示だけを変えているので、計算はどちらでも同じです。</p>
+<p>注釈（<code>//</code> から行末）と <code>"…"</code> の中は書き換えません。</p>
+<h2>数字は打つそばから区切られる</h2>
+<p><code>1234</code> と打つと、その場で <code>1,234</code> になります。答えの側はもともと区切って出ますが、式の側も揃えるための機能です。</p>
+<ul><li>区切りの <code>,</code> の上で ⌫ を押すと、消えずにカーソルだけ左に寄ります（もう一度押すと数字が消えます）</li><li>小数の部分、名前、単位、<code>#3</code> のような番号には手を出しません</li><li>設定 → 計算 →「打つときも3桁ごとに区切る」で止められます</li></ul>
 <h2>演算子で始めた行は、前の行の続き</h2>
-<p>行の先頭を <code>+</code> <code>-</code> <code>*</code> <code>/</code> で始めると、前の行の答えに続けて計算します。</p>
-<div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">1200 * 35</code><span class="calc__ans">42,000</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">2</span><code class="calc__expr">+ 10%</code><span class="calc__ans">46,200</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">3</span><code class="calc__expr">/ 3</code><span class="calc__ans">15,400</span></div></div>
+<p>行の先頭を <code>+</code> <code>-</code> <code>×</code> <code>/</code> で始めると、前の行の答えに続けて計算します。</p>
+<div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">1,200 × 35</code><span class="calc__ans">42,000</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">2</span><code class="calc__expr">+ 10%</code><span class="calc__ans">46,200</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">3</span><code class="calc__expr">/ 3</code><span class="calc__ans">15,400</span></div></div>
 <p><code>- 5</code> は「前の行から5を引く」です。<code>-5</code> と詰めて書けば、ただの負の数になります。この違いは<strong>演算子と数字のあいだの空白</strong>で決まります。</p>
 <h2>数の書き方</h2>
-<p><strong>桁区切りのカンマ</strong> はそのまま通ります。ただし、うしろに数字がちょうど3つ続くときだけ区切りとして読みます。</p>
+<p><strong>桁区切りのカンマ</strong> は、うしろに数字がちょうど3つ続くときだけ区切りとして読みます。</p>
 <div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">1,234 + 5</code><span class="calc__ans">1,239</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">2</span><code class="calc__expr">sum(1,2,3)</code><span class="calc__ans">6</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">3</span><code class="calc__expr">1,23</code><span class="calc__ans calc__ans--error">桁区切りの位置が違います</span></div></div>
 <p><code>1,23</code> のような中途半端な区切りは、黙って <code>123</code> と繋げずにエラーにします。数え違いに気づかないまま進むほうが危ないためです。</p>
 <p><strong>全角</strong> の数字と記号もそのまま通ります。<code>１２００× ３５</code> と打っても計算できます。</p>
@@ -65,11 +71,11 @@
 <div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">2 ^ 10</code><span class="calc__ans">1,024</span></div></div>
 <h2>パーセントは前後で意味が変わる</h2>
 <p>同じ <code>10%</code> でも、前に付く演算子で意味が変わります。</p>
-<figure class="wp-block-table"><table><thead><tr><th>書き方</th><th>答え</th><th>意味</th></tr></thead><tbody><tr><td><code>3000 + 10%</code></td><td>3,300</td><td>割増</td></tr><tr><td><code>3000 - 10%</code></td><td>2,700</td><td>割引</td></tr><tr><td><code>3000 * 10%</code></td><td>300</td><td>その割合の量</td></tr><tr><td><code>10% of 3000</code></td><td>300</td><td>上と同じ意味</td></tr></tbody></table></figure>
+<figure class="wp-block-table"><table><thead><tr><th>書き方</th><th>答え</th><th>意味</th></tr></thead><tbody><tr><td><code>3,000 + 10%</code></td><td>3,300</td><td>割増</td></tr><tr><td><code>3,000 - 10%</code></td><td>2,700</td><td>割引</td></tr><tr><td><code>3,000 × 10%</code></td><td>300</td><td>その割合の量</td></tr><tr><td><code>10% of 3,000</code></td><td>300</td><td>上と同じ意味</td></tr></tbody></table></figure>
 <p>割増・割引が「その数の10%」を足し引きするのに対し、掛け算は「その割合そのもの」を出します。消費税や値引きの計算で、そのまま書けるようにしてあります。</p>
 <h2>計算しない行</h2>
 <ul><li><code>//</code> で始めた行は、まるごとメモとして扱います</li><li>数字を含まない行も計算しません。見出しや覚え書きに使えます</li><li><strong>空行</strong>を入れると、まとまりが切れます（<code>sum</code> の範囲が変わります）</li></ul>
-<div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">// 8月分の見積もり</code><span class="calc__ans"></span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">2</span><code class="calc__expr">材料費</code><span class="calc__ans"></span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">3</span><code class="calc__expr">12000</code><span class="calc__ans">12,000</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">4</span><code class="calc__expr">8400</code><span class="calc__ans">8,400</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">5</span><code class="calc__expr">sum</code><span class="calc__ans">20,400</span></div></div>
+<div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">// 8月分の見積もり</code><span class="calc__ans"></span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">2</span><code class="calc__expr">材料費</code><span class="calc__ans"></span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">3</span><code class="calc__expr">12,000</code><span class="calc__ans">12,000</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">4</span><code class="calc__expr">8,400</code><span class="calc__ans">8,400</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">5</span><code class="calc__expr">sum</code><span class="calc__ans">20,400</span></div></div>
 <h2>エラーの見えかた</h2>
 <p>計算できない行は、答えの欄に理由が出ます。行が赤くなり、その行だけが止まります。下の行はそのまま計算を続けます。</p>
 <div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">3 kg + 2 m</code><span class="calc__ans calc__ans--error">種類の違う単位は足せません</span></div></div>

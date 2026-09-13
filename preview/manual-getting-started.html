@@ -47,18 +47,21 @@
 				<div class="entry__body">
 <p>SujiCalc は、紙に書くように計算するノート型の電卓です。式を打つと、その行の右側にすぐ答えが出ます。<strong>「＝」を押す必要はありません。</strong></p>
 <p>書いた式はそのまま残ります。あとから数字を書き換えれば、その数字を使っている行がすべて計算し直されます。見積もりや検討のように「前の答えを次に使う」計算を、消さずに全部残したまま進められます。</p>
-<div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">単価 = 1200円</code><span class="calc__ans">1,200円</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">2</span><code class="calc__expr">個数 = 35</code><span class="calc__ans">35</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">3</span><code class="calc__expr">単価 * 個数</code><span class="calc__ans">42,000円</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">4</span><code class="calc__expr">+ 10%</code><span class="calc__ans">46,200円</span></div></div>
-<p>3行目の <code>単価 * 個数</code> は、1行目と2行目で名前を付けた値を呼び出しています。1行目の <code>1200円</code> を <code>1300円</code> に書き換えれば、3行目も4行目もその場で合い直ります。</p>
+<div class="calc"><div class="calc__line"><span class="calc__no" aria-hidden="true">1</span><code class="calc__expr">単価 = 1,200円</code><span class="calc__ans">1,200円</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">2</span><code class="calc__expr">個数 = 35</code><span class="calc__ans">35</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">3</span><code class="calc__expr">単価 × 個数</code><span class="calc__ans">42,000円</span></div><div class="calc__line"><span class="calc__no" aria-hidden="true">4</span><code class="calc__expr">+ 10%</code><span class="calc__ans">46,200円</span></div></div>
+<p>3行目の <code>単価 × 個数</code> は、1行目と2行目で名前を付けた値を呼び出しています。1行目の <code>1,200円</code> を <code>1,300円</code> に書き換えれば、3行目も4行目もその場で合い直ります。</p>
 <h2>画面の見かた</h2>
 <p><strong>本文</strong> — 式を書く場所です。左端に行番号が並びます。</p>
 <p><strong>答えの欄</strong> — 本文の右側です。その行の計算結果が出ます。境目をつまむと幅を変えられます。</p>
 <p><strong>行番号</strong> — タップすると鍵が付き、その行を編集できなくなります。もう一度タップで外れます。計算書の式を守りたいときに使います。</p>
 <p><strong>シートのタブ</strong> — 本文の上にあります。書類は何枚でも増やせます。</p>
 <p><strong>キーパッド</strong> — 画面の下です。数字と演算子のほかに、関数と単位をタップで入れられます。ツールバーのキーボードボタンで隠せます。</p>
+<p><strong>グラフ</strong> — <code>plot</code> や <code>chart</code> を書くと、その式のすぐ下に描かれます。</p>
 <h2>最初の一歩</h2>
-<p>1行目に <code>1200 * 35</code> と打ってみてください。右に <code>42,000</code> と出ます。</p>
+<p>1行目に <code>1200</code> と打つと、打っているそばから <code>1,200</code> と区切られます。続けて <code>× 35</code> と打つと、右に <code>42,000</code> と出ます。キーボードで <code>*</code> を打っても、画面には <code>×</code> で出ます。</p>
 <p>次の行に <code>+ 10%</code> と打つと <code>46,200</code> になります。<strong>演算子で始めた行は、前の行の続きになります。</strong></p>
-<p>さらに次の行で <code>/ 3</code> と打てば <code>15,400</code>。ここまでの3行は残ったままなので、1行目の <code>1200</code> を <code>1500</code> に変えれば、下の2行も一度に合い直ります。</p>
+<p>さらに次の行で <code>/ 3</code> と打てば <code>15,400</code>。ここまでの3行は残ったままなので、1行目の <code>1,200</code> を <code>1,500</code> に変えれば、下の2行も一度に合い直ります。</p>
+<h2>はじめてのシート</h2>
+<p>初回起動時には、書き方の例が入ったシートが4枚用意されています。「はじめてのシート」「表・文字・グラフ」「くり返しと関数」、それに計算書の例です。消しても構いませんし、書き換えて自分用にしても構いません。</p>
 <h2>動く環境</h2>
 <ul><li>iPhone・iPad — iOS / iPadOS 17 以降</li><li>Mac — macOS 14 (Sonoma) 以降</li></ul>
 <p>3つとも同じ書類を扱えます。iCloud で自動的に同期されるので、現場の iPhone に打ち込んだ数字を事務所の Mac でそのまま続けられます。</p>
