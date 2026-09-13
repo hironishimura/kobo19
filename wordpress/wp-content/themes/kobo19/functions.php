@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'KOBO19_VERSION', '1.0.1' );
+define( 'KOBO19_VERSION', '1.1.0' );
 
 require_once get_template_directory() . '/inc/cpt.php';
 require_once get_template_directory() . '/inc/meta-box.php';
@@ -55,6 +55,19 @@ function kobo19_setup() {
 	) );
 }
 add_action( 'after_setup_theme', 'kobo19_setup' );
+
+/**
+ * Mac 版の配布ファイルをメディアに上げられるようにする（ZIP は最初から通る）。
+ *
+ * @param array<string, string> $mimes 拡張子と MIME の対応。
+ * @return array<string, string>
+ */
+function kobo19_upload_mimes( $mimes ) {
+	$mimes['dmg'] = 'application/x-apple-diskimage';
+	$mimes['pkg'] = 'application/octet-stream';
+	return $mimes;
+}
+add_filter( 'upload_mimes', 'kobo19_upload_mimes' );
 
 /**
  * 抜粋の長さを日本語向けに調整する。

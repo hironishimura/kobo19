@@ -10,6 +10,7 @@ defined( 'ABSPATH' ) || exit;
 $kobo19_app_id   = get_the_ID();
 $kobo19_status   = kobo19_app_meta( 'status' );
 $kobo19_store    = kobo19_app_meta( 'store' );
+$kobo19_download = kobo19_app_meta( 'download' );
 $kobo19_chapters = kobo19_app_chapters( $kobo19_app_id );
 ?>
 <article class="app-card reveal">
@@ -53,6 +54,10 @@ $kobo19_chapters = kobo19_app_chapters( $kobo19_app_id );
 
 			<?php if ( $kobo19_store ) : ?>
 				<a class="btn btn--quiet" href="<?php echo esc_url( $kobo19_store ); ?>">App Store</a>
+			<?php endif; ?>
+
+			<?php if ( $kobo19_download ) : ?>
+				<a class="btn btn--quiet" href="<?php echo esc_url( get_permalink() . '#download' ); ?>">Mac 版をダウンロード</a>
 			<?php endif; ?>
 		</p>
 	</div>

@@ -14,6 +14,7 @@ $kobo19_app_id  = isset( $args['app_id'] ) ? (int) $args['app_id'] : get_the_ID(
 $kobo19_heading = ( isset( $args['heading'] ) ) ? $args['heading'] : 'h1';
 
 $kobo19_store    = kobo19_app_meta( 'store', $kobo19_app_id );
+$kobo19_download = kobo19_app_download( $kobo19_app_id );
 $kobo19_demo     = kobo19_app_meta( 'demo', $kobo19_app_id );
 $kobo19_facts    = kobo19_app_facts( $kobo19_app_id );
 $kobo19_chapters = kobo19_app_chapters( $kobo19_app_id );
@@ -47,8 +48,12 @@ $kobo19_status   = kobo19_app_meta( 'status', $kobo19_app_id );
 						<a class="btn" href="<?php echo esc_url( $kobo19_store ); ?>">App Store で見る</a>
 					<?php endif; ?>
 
+					<?php if ( $kobo19_download ) : ?>
+						<a class="btn<?php echo $kobo19_store ? ' btn--quiet' : ''; ?>" href="<?php echo esc_url( $kobo19_download['url'] ); ?>" download>Mac 版をダウンロード</a>
+					<?php endif; ?>
+
 					<?php if ( $kobo19_chapters ) : ?>
-						<a class="btn<?php echo $kobo19_store ? ' btn--quiet' : ''; ?>" href="<?php echo esc_url( get_permalink( $kobo19_chapters[0] ) ); ?>">使い方を読む</a>
+						<a class="btn<?php echo ( $kobo19_store || $kobo19_download ) ? ' btn--quiet' : ''; ?>" href="<?php echo esc_url( get_permalink( $kobo19_chapters[0] ) ); ?>">使い方を読む</a>
 					<?php endif; ?>
 				</div>
 

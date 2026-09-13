@@ -31,6 +31,7 @@ while ( have_posts() ) :
 		<?php
 	endif;
 
+	get_template_part( 'template-parts/app-download', null, array( 'app_id' => get_the_ID() ) );
 	get_template_part( 'template-parts/app-docs', null, array( 'app_id' => get_the_ID() ) );
 
 endwhile;

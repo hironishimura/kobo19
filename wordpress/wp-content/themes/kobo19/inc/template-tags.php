@@ -274,6 +274,59 @@ function kobo19_app_facts( $app_id ) {
 }
 
 /**
+ * Mac 版のダウンロード情報。URL が無ければ null。
+ *
+ * ファイルが自分のサーバーにあれば、大きさと更新日も読んで返します。
+ * 「対応」は「iOS 17 / macOS 14 以降」のような書き方から macOS の部分だけを抜きます。
+ *
+ * @param int $app_id アプリのID。
+ * @return array{url: string, file: string, ext: string, size: string, date: string, requires: string}|null
+ */
+function kobo19_app_download( $app_id ) {
+	$url = kobo19_app_meta( 'download', $app_id );
+
+	if ( ! $url ) {
+		return null;
+	}
+
+	$path = (string) wp_parse_url( $url, PHP_URL_PATH );
+	$file = $path ? wp_basename( $path ) : '';
+
+	$info = array(
+		'url'      => $url,
+		'file'     => $file,
+		'ext'      => strtolower( pathinfo( $file, PATHINFO_EXTENSION ) ),
+		'size'     => '',
+		'date'     => '',
+		'requires' => '',
+	);
+
+	$requires = kobo19_app_meta( 'requires', $app_id );
+	if ( preg_match( '/macOS[^\/／]*/u', $requires, $m ) ) {
+		$info['requires'] = trim( $m[0] );
+	} elseif ( $requires ) {
+		$info['requires'] = $requires;
+	}
+
+	$bare    = strtok( $url, '?' );
+	$uploads = wp_get_upload_dir();
+	$local   = '';
+
+	if ( 0 === strpos( $bare, $uploads['baseurl'] ) ) {
+		$local = $uploads['basedir'] . substr( $bare, strlen( $uploads['baseurl'] ) );
+	} elseif ( 0 === strpos( $bare, site_url( '/' ) ) ) {
+		$local = ABSPATH . substr( $bare, strlen( site_url( '/' ) ) );
+	}
+
+	if ( $local && is_readable( $local ) ) {
+		$info['size'] = size_format( (int) filesize( $local ), 1 );
+		$info['date'] = wp_date( 'Y年n月j日', (int) filemtime( $local ) );
+	}
+
+	return $info;
+}
+
+/**
  * ヘッダー・フッターに並べるリンクを組み立てる。
  *
  * アプリが1本のうちは、そのアプリの説明書やサポートへ直接つなぎます。

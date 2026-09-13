@@ -152,6 +152,13 @@ function kobo19_inline( $text ) {
 // ---------------------------------------------------------------- 共通の枠
 
 $app      = kobo19_app_source();
+
+// プレビューでもダウンロードの見え方を確かめられるよう、本番のファイルを指しておく
+// （本番の URL は管理画面の「アプリの情報」で入れる。starter-app.php は空のまま）
+if ( ! $app['meta']['download'] ) {
+	$app['meta']['download']      = 'https://qkobo.jp/wp-content/uploads/2026/09/SujiCalc-1.0-mac.zip';
+	$app['meta']['download_size'] = '';
+}
 $chapters = kobo19_manual_source();
 $pages    = kobo19_page_source();
 
@@ -284,10 +291,15 @@ function kobo19_app_hero( $app ) {
 	$store   = $app['meta']['store'];
 	$buttons = '';
 
+	$download = $app['meta']['download'];
+
 	if ( $store ) {
 		$buttons .= '<a class="btn" href="' . esc_url( $store ) . '">App Store で見る</a>';
 	}
-	$buttons .= '<a class="btn' . ( $store ? ' btn--quiet' : '' ) . '" href="manual-getting-started.html">使い方を読む</a>';
+	if ( $download ) {
+		$buttons .= '<a class="btn' . ( $store ? ' btn--quiet' : '' ) . '" href="' . esc_url( $download ) . '" download>Mac 版をダウンロード</a>';
+	}
+	$buttons .= '<a class="btn' . ( ( $store || $download ) ? ' btn--quiet' : '' ) . '" href="manual-getting-started.html">使い方を読む</a>';
 
 	$demo = $app['meta']['demo'] ? '<div class="hero__demo">' . do_shortcode( $app['meta']['demo'] ) . '</div>' : '';
 
@@ -392,6 +404,71 @@ function kobo19_app_docs_section( $chapters, $pages ) {
 ';
 }
 
+/** Mac 版のダウンロード（template-parts/app-download.php と同じ形）。 */
+function kobo19_app_download_section( $app ) {
+	$url = $app['meta']['download'];
+	if ( ! $url ) {
+		return '';
+	}
+
+	$name = $app['title'];
+	$file = basename( (string) parse_url( $url, PHP_URL_PATH ) );
+	$size = isset( $app['meta']['download_size'] ) ? $app['meta']['download_size'] : '';
+	$date = isset( $app['meta']['download_date'] ) ? $app['meta']['download_date'] : '';
+
+	preg_match( '/macOS[^\/／]*/u', $app['meta']['requires'], $m );
+	$requires = $m ? trim( $m[0] ) : $app['meta']['requires'];
+
+	$steps = array(
+		array( 'ZIP を開く', "ダウンロードした {$file} をダブルクリックすると、{$name}.app が出てきます。Safari なら自動で開かれています。" ),
+		array( '「アプリケーション」へ移す', "{$name}.app を Finder の「アプリケーション」フォルダへドラッグします。" ),
+		array( 'ダブルクリックで起動', '初めて開くときは「インターネットからダウンロードされたアプリケーションです」と確認が出るので、「開く」を押します。' ),
+	);
+
+	$steps_html = '';
+	foreach ( $steps as $step ) {
+		$steps_html .= '<li><strong>' . esc_html( $step[0] ) . '</strong><span>' . esc_html( $step[1] ) . '</span></li>';
+	}
+
+	$facts  = '<div class="facts__row"><dt>ファイル</dt><dd>' . esc_html( $file . ( $size ? "（{$size}）" : '' ) ) . '</dd></div>';
+	$facts .= '<div class="facts__row"><dt>バージョン</dt><dd>' . esc_html( $app['meta']['version'] ) . '</dd></div>';
+	$facts .= '<div class="facts__row"><dt>対応</dt><dd>' . esc_html( $requires ) . '</dd></div>';
+	if ( $date ) {
+		$facts .= '<div class="facts__row"><dt>更新</dt><dd>' . esc_html( $date ) . '</dd></div>';
+	}
+
+	$note = '';
+	if ( $app['meta']['download_note'] ) {
+		$note = '<div class="download__note"><p>' . implode( '</p><p>', array_map( 'esc_html', explode( "\n", $app['meta']['download_note'] ) ) ) . '</p></div>';
+	}
+
+	return '
+	<section class="section" id="download">
+		<div class="wrap">
+			<p class="eyebrow">ダウンロード</p>
+
+			<div class="download">
+				<div class="download__text">
+					<h2 class="section-title">Mac 版</h2>
+					<p class="section-lead">App Store を通さずに、ここから直接入れられます。</p>
+
+					<p class="download__actions"><a class="btn" href="' . esc_url( $url ) . '" download>Mac 版をダウンロード</a></p>
+
+					<dl class="facts">' . $facts . '</dl>
+				</div>
+
+				<div class="download__steps">
+					<p class="download__heading">入れかた</p>
+					<ol class="steps">' . $steps_html . '</ol>
+					<aside class="callout"><p class="callout__title">「開発元を確認できません」と出たとき</p>システム設定 → プライバシーとセキュリティ を開き、下のほうにある「“' . esc_html( $name ) . '” は開発元を確認できないため…」の行で「このまま開く」を押してください。次からはそのまま開けます。</aside>
+					' . $note . '
+				</div>
+			</div>
+		</div>
+	</section>
+';
+}
+
 /** アプリのカード（2本以上になったときの一覧）。 */
 function kobo19_app_card( $app, $chapters ) {
 	$facts = array_filter( array(
@@ -411,6 +488,9 @@ function kobo19_app_card( $app, $chapters ) {
 
 	$badge = $app['meta']['status'] ? '<span class="badge">' . esc_html( $app['meta']['status'] ) . '</span>' : '';
 	$store = $app['meta']['store'] ? '<a class="btn btn--quiet" href="' . esc_url( $app['meta']['store'] ) . '">App Store</a>' : '';
+	if ( $app['meta']['download'] ) {
+		$store .= '<a class="btn btn--quiet" href="app-' . $app['slug'] . '.html#download">Mac 版をダウンロード</a>';
+	}
 
 	return '<article class="app-card reveal">
 		<div class="app-card__body">
@@ -469,7 +549,7 @@ file_put_contents(
 			</div>
 		</div>
 	</section>
-' . kobo19_app_docs_section( $chapters, $pages ) . kobo19_foot()
+' . kobo19_app_download_section( $app ) . kobo19_app_docs_section( $chapters, $pages ) . kobo19_foot()
 );
 
 // --- アプリ一覧（2本目が増えたときの見え方）---

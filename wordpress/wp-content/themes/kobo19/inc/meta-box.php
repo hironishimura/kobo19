@@ -32,6 +32,17 @@ function kobo19_app_fields() {
 			'type'  => 'url',
 			'hint'  => '入れると「App Store で見る」ボタンが出ます。審査が通ってからで構いません。',
 		),
+		'download' => array(
+			'label' => 'Mac 版のダウンロード URL',
+			'type'  => 'url',
+			'pick'  => true,
+			'hint'  => 'メディアに上げた ZIP（または DMG）の URL。入れると「Mac 版をダウンロード」のボタンと、入れかたの手順が製品ページに出ます。',
+		),
+		'download_note' => array(
+			'label' => 'ダウンロードの補足',
+			'type'  => 'textarea',
+			'hint'  => '入れかたの手順の下に出る文章。空欄なら出ません。例：iPhone / iPad と同じ Apple アカウントなら書類が同期されます。',
+		),
 		'version'  => array(
 			'label' => 'バージョン',
 			'type'  => 'text',
@@ -93,8 +104,34 @@ function kobo19_meta_style() {
 		.kobo19-fields input, .kobo19-fields select, .kobo19-fields textarea { width: 100%; }
 		.kobo19-fields textarea { font-family: ui-monospace, Menlo, monospace; font-size: 13px; }
 		.kobo19-fields p.description { margin-top: 4px; }
+		.kobo19-fields .kobo19-pick-row { display: flex; gap: 6px; }
+		.kobo19-fields .kobo19-pick-row input { flex: 1; }
 	</style>';
 }
+
+/**
+ * アプリの編集画面で、メディアからファイルを選べるようにする。
+ *
+ * @param string $hook 管理画面の種類。
+ */
+function kobo19_meta_scripts( $hook ) {
+	if ( ! in_array( $hook, array( 'post.php', 'post-new.php' ), true ) || 'app' !== get_post_type() ) {
+		return;
+	}
+
+	wp_enqueue_media();
+	wp_add_inline_script(
+		'media-editor',
+		'document.addEventListener("DOMContentLoaded",function(){'
+		. 'document.querySelectorAll(".kobo19-pick").forEach(function(b){'
+		. 'b.addEventListener("click",function(){'
+		. 'var f=wp.media({title:"ファイルを選ぶ",button:{text:"この URL を使う"},multiple:false});'
+		. 'f.on("select",function(){var a=f.state().get("selection").first().toJSON();'
+		. 'document.getElementById(b.dataset.target).value=a.url;});'
+		. 'f.open();});});});'
+	);
+}
+add_action( 'admin_enqueue_scripts', 'kobo19_meta_scripts' );
 
 /**
  * アプリの入力欄を描く。
@@ -133,6 +170,14 @@ function kobo19_render_app_box( $post ) {
 				esc_attr( $id ),
 				isset( $field['rows'] ) ? (int) $field['rows'] : 4,
 				esc_textarea( $value )
+			);
+		} elseif ( ! empty( $field['pick'] ) ) {
+			// URL を手で貼っても、メディアから選んでもよい
+			printf(
+				'<div class="kobo19-pick-row"><input type="url" id="%1$s" name="%1$s" value="%2$s" />'
+				. '<button type="button" class="button kobo19-pick" data-target="%1$s">メディアから選ぶ</button></div>',
+				esc_attr( $id ),
+				esc_attr( $value )
 			);
 		} else {
 			printf(
