@@ -906,9 +906,11 @@ td code {
 	border-top: 0;
 }
 
-/* デモや目次が無いときは1段組みに */
-.hero__grid--single,
-.manual__grid--plain {
+/* デモや目次が無いときは1段組みに。
+   2段組みの指定（.manual__grid / .hero__grid）より前に書いてあるので、
+   クラスを重ねて詳細度を上げ、順序に関係なく勝つようにしている */
+.hero__grid.hero__grid--single,
+.manual__grid.manual__grid--plain {
 	grid-template-columns: minmax(0, 1fr);
 }
 

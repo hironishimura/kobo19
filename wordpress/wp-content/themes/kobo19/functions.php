@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'KOBO19_VERSION', '1.0.0' );
+define( 'KOBO19_VERSION', '1.0.1' );
 
 require_once get_template_directory() . '/inc/cpt.php';
 require_once get_template_directory() . '/inc/meta-box.php';

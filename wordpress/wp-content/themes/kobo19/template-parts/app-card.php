@@ -32,14 +32,14 @@ $kobo19_chapters = kobo19_app_chapters( $kobo19_app_id );
 
 		<?php $kobo19_lead = kobo19_app_meta( 'lead' ); ?>
 		<?php if ( $kobo19_lead ) : ?>
-			<p class="app-card__text"><?php echo esc_html( wp_trim_words( $kobo19_lead, 60, '…' ) ); ?></p>
+			<p class="app-card__text"><?php echo esc_html( str_replace( "\n", ' ', $kobo19_lead ) ); ?></p>
 		<?php endif; ?>
 
 		<?php $kobo19_facts = kobo19_app_facts( $kobo19_app_id ); ?>
 		<?php if ( $kobo19_facts ) : ?>
 			<ul class="app-card__facts">
-				<?php foreach ( array_slice( $kobo19_facts, 0, 3 ) as $kobo19_value ) : ?>
-					<li><?php echo esc_html( $kobo19_value ); ?></li>
+				<?php foreach ( array_slice( $kobo19_facts, 0, 3, true ) as $kobo19_key => $kobo19_value ) : ?>
+					<li><?php echo esc_html( 'バージョン' === $kobo19_key ? 'バージョン ' . $kobo19_value : $kobo19_value ); ?></li>
 				<?php endforeach; ?>
 			</ul>
 		<?php endif; ?>
