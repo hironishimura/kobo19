@@ -36,7 +36,7 @@ $kobo19_email   = kobo19_option( 'kobo19_contact_email' );
 			<div class="site-footer__inner">
 				<div>
 					<a class="brand" href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
-						<span class="brand__mark">19</span>
+						<span class="brand__mark"><?php echo esc_html( kobo19_option( 'kobo19_brand_mark', 'Q' ) ); ?></span>
 						<span class="brand__name"><?php bloginfo( 'name' ); ?></span>
 					</a>
 					<?php if ( $kobo19_email ) : ?>

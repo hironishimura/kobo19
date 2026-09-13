@@ -157,7 +157,7 @@ $pages    = kobo19_page_source();
 
 $APP   = $app['title'];
 $EMAIL = 'tapes-penne05@icloud.com';
-$SITE  = '19工房';
+$SITE  = 'Q工房';
 
 /** アプリの数で中身が変わるメニュー。ここでは1本なので、その資料へ直接つなぐ。 */
 function kobo19_menu() {
@@ -196,7 +196,7 @@ function kobo19_head( $title ) {
 	<header class="site-header">
 		<div class="wrap site-header__inner">
 			<a class="brand" href="index.html" rel="home">
-				<span class="brand__mark">19</span>
+				<span class="brand__mark">Q</span>
 				<span class="brand__name">' . $SITE . '</span>
 				<span class="brand__tagline">つくったアプリを置いておく場所</span>
 			</a>
@@ -233,7 +233,7 @@ function kobo19_foot() {
 			<div class="site-footer__inner">
 				<div>
 					<a class="brand" href="index.html" rel="home">
-						<span class="brand__mark">19</span>
+						<span class="brand__mark">Q</span>
 						<span class="brand__name">' . $SITE . '</span>
 					</a>
 					<p class="site-footer__mail"><a href="mailto:' . $EMAIL . '">' . $EMAIL . '</a></p>
@@ -439,7 +439,7 @@ file_put_contents(
 	<section class="hero">
 		<div class="wrap">
 			<div class="hero__text hero__text--wide">
-				<p class="hero__eyebrow">WORKSHOP 19</p>
+				<p class="hero__eyebrow">WORKSHOP Q</p>
 
 				<h1 class="hero__title hero__title--site">つくったもの</h1>
 

@@ -18,7 +18,7 @@ $kobo19_apps = kobo19_apps();
 <section class="hero">
 	<div class="wrap">
 		<div class="hero__text hero__text--wide">
-			<p class="hero__eyebrow"><?php echo esc_html( kobo19_option( 'kobo19_home_eyebrow', 'WORKSHOP 19' ) ); ?></p>
+			<p class="hero__eyebrow"><?php echo esc_html( kobo19_option( 'kobo19_home_eyebrow', 'WORKSHOP Q' ) ); ?></p>
 
 			<h1 class="hero__title hero__title--site"><?php echo esc_html( kobo19_option( 'kobo19_home_title', 'つくったもの' ) ); ?></h1>
 

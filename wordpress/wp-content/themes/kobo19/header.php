@@ -30,7 +30,7 @@ defined( 'ABSPATH' ) || exit;
 				<?php if ( has_custom_logo() ) : ?>
 					<?php the_custom_logo(); ?>
 				<?php else : ?>
-					<span class="brand__mark">19</span>
+					<span class="brand__mark"><?php echo esc_html( kobo19_option( 'kobo19_brand_mark', 'Q' ) ); ?></span>
 					<span class="brand__name"><?php bloginfo( 'name' ); ?></span>
 				<?php endif; ?>
 				<?php $tagline = get_bloginfo( 'description', 'display' ); ?>

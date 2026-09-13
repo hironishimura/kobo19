@@ -29,9 +29,14 @@ function kobo19_customize_register( $wp_customize ) {
 	);
 
 	$fields = array(
+		'kobo19_brand_mark'    => array(
+			'label'   => 'ロゴの文字',
+			'default' => 'Q',
+			'type'    => 'text',
+		),
 		'kobo19_home_eyebrow'  => array(
 			'label'   => 'トップの小見出し',
-			'default' => 'WORKSHOP 19',
+			'default' => 'WORKSHOP Q',
 			'type'    => 'text',
 		),
 		'kobo19_home_title'    => array(
