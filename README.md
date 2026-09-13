@@ -4,6 +4,19 @@
 アプリを1本ずつ登録すると、それぞれに **製品ページ・説明書・サポート・プライバシーポリシー・利用規約**
 を持たせられます。いまは **SujiCalc** が1本入っています。
 
+## 公開先
+
+**https://qkobo.jp/**（Xserver。設置手順は [docs/xserver-setup.md](docs/xserver-setup.md)）
+
+ドメインは取得済みで、ネームサーバーを Xserver へ切り替えるところからです。
+手順書の上から順に進めれば、30分ほど（DNS の反映待ちを除く）で表示されます。
+
+テーマを直したあとの反映は、SSH を設定しておけばコマンド1つです。
+
+```bash
+./deploy-xserver.sh
+```
+
 ## 内容確認用プレビュー
 
 **https://hironishimura.github.io/kobo19/**
@@ -90,11 +103,11 @@ php build-preview.php
 **サポート URL とプライバシーポリシー URL は、アプリごとに必須**です。
 資料を登録すると、次の形の URL ができます。
 
-| 項目 | URL の例 | 必須 |
+| 項目 | URL | 必須 |
 |---|---|---|
-| サポート URL | `https://（サイト）/docs/sujicalc-support/` | 必須 |
-| プライバシーポリシー URL | `https://（サイト）/docs/sujicalc-privacy/` | 必須 |
-| マーケティング URL | `https://（サイト）/apps/sujicalc/` | 任意 |
+| サポート URL | `https://qkobo.jp/docs/sujicalc-support/` | 必須 |
+| プライバシーポリシー URL | `https://qkobo.jp/docs/sujicalc-privacy/` | 必須 |
+| マーケティング URL | `https://qkobo.jp/apps/sujicalc/` | 任意 |
 
 **使用許諾契約**は App Store Connect の既定（Apple の標準 EULA）のままで構いません。
 SujiCalc はアプリ内の初回起動時に利用規約の同意を取っているためです。
@@ -108,14 +121,19 @@ SujiCalc はネットワーク通信なし・解析なし・広告なしで、�
 
 ## 設置のしかた
 
+Xserver（qkobo.jp）への設置は [docs/xserver-setup.md](docs/xserver-setup.md) に、
+お名前.com のネームサーバー変更から公開前チェックまでを順に書いてあります。
+以下は、どのサーバーでも共通の要点です。
+
 ### 1. WordPress を用意する
 
-レンタルサーバーの管理画面などからインストールします。PHP 8.0 以上が必要です。
+PHP 8.0 以上が必要です。Xserver なら「WordPress簡単インストール」で入ります。
 
 ### 2. テーマを入れる
 
 管理画面 → 外観 → テーマ → 新規追加 → テーマのアップロードで `kobo19.zip` を選び、有効化します。
-FTP の場合は `wordpress/wp-content/themes/kobo19/` フォルダごとアップロードしてから有効化します。
+SSH が使えるなら `./deploy-xserver.sh` で `wordpress/wp-content/themes/kobo19/` をそのまま送れます
+（`.deploy.env.example` を `.deploy.env` に写して、サーバーIDなどを埋めてください）。
 
 ### 3. 有効化したときに用意されるもの
 

@@ -12,3 +12,8 @@
 # ログ・一時ファイル
 *.log
 node_modules/
+
+# Xserver への接続情報と鍵（絶対に Git に入れない）
+.deploy.env
+*.key
+*.pem
